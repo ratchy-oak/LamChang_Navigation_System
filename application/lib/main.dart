@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         fontFamily: "Kanit",
-        scaffoldBackgroundColor: AppColors.skin,
+        scaffoldBackgroundColor: AppColors.green,
         brightness: Brightness.dark,
       ),
       initialRoute: AppRoutes.login,

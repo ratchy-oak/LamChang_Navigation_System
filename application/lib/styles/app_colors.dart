@@ -7,5 +7,7 @@ class AppColors {
   static const yellow = Color(0xffFFDE7D);
   static const black = Color(0xff000000);
   static const white = Color(0xffffffff);
-  static final fieldColor = const Color(0xffD9D9D9).withOpacity(0.6);
+  static const grey = Colors.grey;
+  static const underline = Color.fromRGBO(238, 238, 238, 1);
+  static const shadow = Color.fromRGBO(17, 182, 152, 0.3);
 }
