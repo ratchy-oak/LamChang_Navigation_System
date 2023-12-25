@@ -3,8 +3,8 @@ import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "เข้าสู่ระบบ",
+                      "สมัครสมาชิก",
                       style: AppText.header,
                     ),
                     Text(
@@ -105,21 +105,30 @@ class LoginPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: AppColors.underline,
+                                    ),
+                                  ),
+                                ),
+                                child: const TextField(
+                                  decoration: InputDecoration(
+                                    hintText: "ยืนยันรหัสผ่าน",
+                                    hintStyle: TextStyle(
+                                      color: AppColors.grey,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
                         const SizedBox(
-                          height: 40,
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            foregroundColor: AppColors.grey,
-                          ),
-                          child: const Text("ลืมรหัสผ่าน ?"),
-                        ),
-                        const SizedBox(
-                          height: 40,
+                          height: 60,
                         ),
                         Container(
                           height: 50,
@@ -132,7 +141,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           child: const Center(
                             child: Text(
-                              "เข้าสู่ระบบ",
+                              "สมัครสมาชิก",
                               style: AppText.button,
                             ),
                           ),
@@ -144,18 +153,18 @@ class LoginPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
-                              "ยังไม่มีบัญชี ? ",
+                              "มีบัญชีแล้ว ? ",
                               style: AppText.body,
                             ),
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context)
-                                    .pushReplacementNamed(AppRoutes.register);
+                                    .pushReplacementNamed(AppRoutes.login);
                               },
                               style: TextButton.styleFrom(
                                 foregroundColor: AppColors.grey,
                               ),
-                              child: const Text("สมัครสมาชิก"),
+                              child: const Text("เข้าสู่ระบบ"),
                             ),
                           ],
                         ),

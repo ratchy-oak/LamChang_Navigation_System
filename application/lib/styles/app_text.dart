@@ -7,6 +7,15 @@ class AppText {
     fontSize: 40,
     fontWeight: FontWeight.w600,
   );
+  static const button = TextStyle(
+    color: AppColors.white,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  );
+  static const body = TextStyle(
+    color: AppColors.grey,
+    fontWeight: FontWeight.w500,
+  );
   static const subtitle = TextStyle(
     color: AppColors.white,
     fontSize: 20,
