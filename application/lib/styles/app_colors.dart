@@ -9,5 +9,5 @@ class AppColors {
   static const white = Color(0xffffffff);
   static const grey = Colors.grey;
   static const underline = Color.fromRGBO(238, 238, 238, 1);
-  static const shadow = Color.fromRGBO(17, 182, 152, 0.3);
+  static const shadow = Color.fromRGBO(15, 168, 140, 0.298);
 }
