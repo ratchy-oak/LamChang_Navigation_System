@@ -76,13 +76,19 @@ class LoginPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                child: const TextField(
-                                  decoration: InputDecoration(
-                                    hintText: "ชื่อผู้ใช้",
-                                    hintStyle: TextStyle(
-                                      color: AppColors.grey,
+                                child: const Padding(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      hintText: "ชื่อผู้ใช้",
+                                      hintStyle: TextStyle(
+                                        color: AppColors.grey,
+                                      ),
+                                      border: InputBorder.none,
                                     ),
-                                    border: InputBorder.none,
+                                    style: TextStyle(
+                                      color: AppColors.black,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -95,13 +101,22 @@ class LoginPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                child: const TextField(
-                                  decoration: InputDecoration(
-                                    hintText: "รหัสผ่าน",
-                                    hintStyle: TextStyle(
-                                      color: AppColors.grey,
+                                child: const Padding(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: TextField(
+                                    obscureText: true,
+                                    enableSuggestions: false,
+                                    autocorrect: false,
+                                    decoration: InputDecoration(
+                                      hintText: "รหัสผ่าน",
+                                      hintStyle: TextStyle(
+                                        color: AppColors.grey,
+                                      ),
+                                      border: InputBorder.none,
                                     ),
-                                    border: InputBorder.none,
+                                    style: TextStyle(
+                                      color: AppColors.black,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -116,10 +131,13 @@ class LoginPage extends StatelessWidget {
                           style: TextButton.styleFrom(
                             foregroundColor: AppColors.grey,
                           ),
-                          child: const Text("ลืมรหัสผ่าน ?"),
+                          child: const Text(
+                            "ลืมรหัสผ่าน ?",
+                            style: AppText.body,
+                          ),
                         ),
                         const SizedBox(
-                          height: 40,
+                          height: 30,
                         ),
                         Container(
                           height: 50,
@@ -130,10 +148,18 @@ class LoginPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(50),
                             color: AppColors.red,
                           ),
-                          child: const Center(
-                            child: Text(
-                              "เข้าสู่ระบบ",
-                              style: AppText.button,
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: InkWell(
+                              onTap: () {},
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(50)),
+                              child: const Center(
+                                child: Text(
+                                  "เข้าสู่ระบบ",
+                                  style: AppText.button,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -153,7 +179,7 @@ class LoginPage extends StatelessWidget {
                                     .pushReplacementNamed(AppRoutes.register);
                               },
                               style: TextButton.styleFrom(
-                                foregroundColor: AppColors.grey,
+                                foregroundColor: AppColors.green,
                               ),
                               child: const Text("สมัครสมาชิก"),
                             ),

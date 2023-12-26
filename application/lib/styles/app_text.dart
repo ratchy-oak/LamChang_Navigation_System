@@ -14,7 +14,7 @@ class AppText {
   );
   static const body = TextStyle(
     color: AppColors.grey,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
   );
   static const subtitle = TextStyle(
     color: AppColors.white,

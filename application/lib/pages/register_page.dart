@@ -3,8 +3,17 @@ import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
 
-class RegisterPage extends StatelessWidget {
+enum Type { none, user, helper }
+
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  var type = Type.none;
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +85,19 @@ class RegisterPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                child: const TextField(
-                                  decoration: InputDecoration(
-                                    hintText: "ชื่อผู้ใช้",
-                                    hintStyle: TextStyle(
-                                      color: AppColors.grey,
+                                child: const Padding(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      hintText: "ชื่อผู้ใช้",
+                                      hintStyle: TextStyle(
+                                        color: AppColors.grey,
+                                      ),
+                                      border: InputBorder.none,
                                     ),
-                                    border: InputBorder.none,
+                                    style: TextStyle(
+                                      color: AppColors.black,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -95,13 +110,22 @@ class RegisterPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                child: const TextField(
-                                  decoration: InputDecoration(
-                                    hintText: "รหัสผ่าน",
-                                    hintStyle: TextStyle(
-                                      color: AppColors.grey,
+                                child: const Padding(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: TextField(
+                                    obscureText: true,
+                                    enableSuggestions: false,
+                                    autocorrect: false,
+                                    decoration: InputDecoration(
+                                      hintText: "รหัสผ่าน",
+                                      hintStyle: TextStyle(
+                                        color: AppColors.grey,
+                                      ),
+                                      border: InputBorder.none,
                                     ),
-                                    border: InputBorder.none,
+                                    style: TextStyle(
+                                      color: AppColors.black,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -114,13 +138,86 @@ class RegisterPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                child: const TextField(
-                                  decoration: InputDecoration(
-                                    hintText: "ยืนยันรหัสผ่าน",
-                                    hintStyle: TextStyle(
-                                      color: AppColors.grey,
+                                child: const Padding(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: TextField(
+                                    obscureText: true,
+                                    enableSuggestions: false,
+                                    autocorrect: false,
+                                    decoration: InputDecoration(
+                                      hintText: "ยืนยันรหัสผ่าน",
+                                      hintStyle: TextStyle(
+                                        color: AppColors.grey,
+                                      ),
+                                      border: InputBorder.none,
                                     ),
-                                    border: InputBorder.none,
+                                    style: TextStyle(
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: AppColors.underline,
+                                    ),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: RadioListTile(
+                                          activeColor: AppColors.yellow,
+                                          title: const Text(
+                                            "ผู้ประสบเหตุ",
+                                            style: AppText.body,
+                                          ),
+                                          value: Type.user,
+                                          visualDensity: const VisualDensity(
+                                            horizontal:
+                                                VisualDensity.minimumDensity,
+                                            vertical:
+                                                VisualDensity.minimumDensity,
+                                          ),
+                                          contentPadding: EdgeInsets.zero,
+                                          groupValue: type,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              type = Type.user;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: RadioListTile(
+                                          activeColor: AppColors.yellow,
+                                          title: const Text(
+                                            "เจ้าหน้าที่",
+                                            style: AppText.body,
+                                          ),
+                                          value: Type.helper,
+                                          visualDensity: const VisualDensity(
+                                              horizontal:
+                                                  VisualDensity.minimumDensity,
+                                              vertical:
+                                                  VisualDensity.minimumDensity),
+                                          contentPadding: EdgeInsets.zero,
+                                          groupValue: type,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              type = Type.helper;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -139,10 +236,18 @@ class RegisterPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(50),
                             color: AppColors.red,
                           ),
-                          child: const Center(
-                            child: Text(
-                              "สมัครสมาชิก",
-                              style: AppText.button,
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: InkWell(
+                              onTap: () {},
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(50)),
+                              child: const Center(
+                                child: Text(
+                                  "สมัครสมาชิก",
+                                  style: AppText.button,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -162,7 +267,7 @@ class RegisterPage extends StatelessWidget {
                                     .pushReplacementNamed(AppRoutes.login);
                               },
                               style: TextButton.styleFrom(
-                                foregroundColor: AppColors.grey,
+                                foregroundColor: AppColors.green,
                               ),
                               child: const Text("เข้าสู่ระบบ"),
                             ),
