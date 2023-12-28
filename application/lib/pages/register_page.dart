@@ -14,6 +14,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   var type = Type.none;
+  bool _isSecurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -110,20 +111,22 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                   ),
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
                                   child: TextField(
-                                    obscureText: true,
+                                    obscureText: _isSecurePassword,
                                     enableSuggestions: false,
                                     autocorrect: false,
                                     decoration: InputDecoration(
                                       hintText: "รหัสผ่าน",
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                         color: AppColors.grey,
                                       ),
                                       border: InputBorder.none,
+                                      suffixIcon: togglePassword(),
                                     ),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -138,20 +141,22 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                   ),
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
                                   child: TextField(
-                                    obscureText: true,
+                                    obscureText: _isSecurePassword,
                                     enableSuggestions: false,
                                     autocorrect: false,
                                     decoration: InputDecoration(
                                       hintText: "ยืนยันรหัสผ่าน",
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                         color: AppColors.grey,
                                       ),
                                       border: InputBorder.none,
+                                      suffixIcon: togglePassword(),
                                     ),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: AppColors.black,
                                     ),
                                   ),
@@ -285,6 +290,20 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget togglePassword() {
+    return IconButton(
+      onPressed: () {
+        setState(() {
+          _isSecurePassword = !_isSecurePassword;
+        });
+      },
+      icon: _isSecurePassword
+          ? const Icon(Icons.visibility)
+          : const Icon(Icons.visibility_off),
+      color: AppColors.grey,
     );
   }
 }
