@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:application/config/app_routes.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import '../config/config.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,6 +17,65 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isSecurePassword = true;
+  bool usernamevalidate = false;
+  bool passwordvalidate = false;
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedPref();
+  }
+
+  void initSharedPref() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void loginUser() async {
+    if (usernameController.text.isEmpty) {
+      setState(() {
+        usernamevalidate = true;
+      });
+    } else {
+      setState(() {
+        usernamevalidate = false;
+      });
+    }
+
+    if (passwordController.text.isEmpty) {
+      setState(() {
+        passwordvalidate = true;
+      });
+    } else {
+      setState(() {
+        passwordvalidate = false;
+      });
+    }
+
+    if (usernameController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty) {
+      var reqBody = {
+        "username": usernameController.text,
+        "password": passwordController.text
+      };
+
+      var response = await http.post(Uri.parse(registration),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(reqBody));
+
+      var jsonResponse = jsonDecode(response.body);
+
+      if (jsonResponse['status']) {
+        var myToken = jsonResponse['token'];
+        prefs.setString('token', myToken);
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pushReplacementNamed();
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,18 +150,24 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                   ),
-                                  child: const Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 10, right: 10),
-                                    child: TextField(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 10),
+                                    child: TextFormField(
+                                      controller: usernameController,
                                       decoration: InputDecoration(
                                         hintText: "ชื่อผู้ใช้",
-                                        hintStyle: TextStyle(
+                                        hintStyle: const TextStyle(
                                           color: AppColors.grey,
                                         ),
                                         border: InputBorder.none,
+                                        errorStyle: const TextStyle(
+                                            color: AppColors.red),
+                                        errorText: usernamevalidate
+                                            ? "โปรดป้อนชื่อผู้ใช้"
+                                            : null,
                                       ),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: AppColors.black,
                                       ),
                                     ),
@@ -115,7 +185,8 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         left: 10, right: 10),
-                                    child: TextField(
+                                    child: TextFormField(
+                                      controller: passwordController,
                                       obscureText: _isSecurePassword,
                                       enableSuggestions: false,
                                       autocorrect: false,
@@ -126,6 +197,11 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                         border: InputBorder.none,
                                         suffixIcon: togglePassword(),
+                                        errorStyle: const TextStyle(
+                                            color: AppColors.red),
+                                        errorText: passwordvalidate
+                                            ? "โปรดป้อนรหัสผ่าน"
+                                            : null,
                                       ),
                                       style: const TextStyle(
                                         color: AppColors.black,
@@ -140,7 +216,9 @@ class _LoginPageState extends State<LoginPage> {
                             height: 40,
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              loginUser();
+                            },
                             style: TextButton.styleFrom(
                               foregroundColor: AppColors.grey,
                             ),
@@ -164,7 +242,9 @@ class _LoginPageState extends State<LoginPage> {
                             child: Material(
                               type: MaterialType.transparency,
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  loginUser();
+                                },
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(50)),
                                 child: const Center(

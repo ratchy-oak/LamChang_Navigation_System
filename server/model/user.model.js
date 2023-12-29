@@ -32,6 +32,15 @@ userSchema.pre('save', async function() {
     }
 })
 
-const userModel = db.model('user', userSchema)
+userSchema.methods.comparePassword = async function(userPassword) {
+    try {
+        const isMatch = await bcrypt.compare(userPassword, this.password)
+        return isMatch
+    } catch (error) {
+        throw error
+    }
+}
 
-module.exports = userModel
+const UserModel = db.model('user', userSchema)
+
+module.exports = UserModel

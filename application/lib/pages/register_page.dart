@@ -128,12 +128,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
       var jsonResponse = jsonDecode(response.body);
 
-      print(jsonResponse['status']);
-
       if (jsonResponse['status']) {
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacementNamed(AppRoutes.login);
-      } else {
-        print("Something Went Wrong");
       }
     }
   }
