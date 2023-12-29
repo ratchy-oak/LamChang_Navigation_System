@@ -22,6 +22,9 @@ class _RegisterPageState extends State<RegisterPage> {
   bool usernamevalidate = false;
   bool passwordvalidate = false;
   bool confirmpasswordvalidate = false;
+  bool checkpassword = false;
+  bool passworderrormessage = false;
+  String errormessage = "";
   bool typevalidate = false;
 
   TextEditingController usernameController = TextEditingController();
@@ -29,24 +32,6 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController confirmpasswordController = TextEditingController();
 
   void registerUser() async {
-    String typetext = type.toString();
-    if (usernameController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty &&
-        confirmpasswordController.text.isNotEmpty &&
-        type != Type.none) {
-      var regBody = {
-        "username": usernameController.text,
-        "passowrd": passwordController.text,
-        "type": typetext,
-      };
-
-      var response = await http.post(Uri.parse(registration),
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode(regBody));
-
-      print(response);
-    }
-
     if (usernameController.text.isEmpty) {
       setState(() {
         usernamevalidate = true;
@@ -56,6 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
         usernamevalidate = false;
       });
     }
+
     if (passwordController.text.isEmpty) {
       setState(() {
         passwordvalidate = true;
@@ -65,6 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
         passwordvalidate = false;
       });
     }
+
     if (confirmpasswordController.text.isEmpty) {
       setState(() {
         confirmpasswordvalidate = true;
@@ -74,6 +61,35 @@ class _RegisterPageState extends State<RegisterPage> {
         confirmpasswordvalidate = false;
       });
     }
+
+    if (passwordController.text != confirmpasswordController.text) {
+      setState(() {
+        checkpassword = true;
+      });
+    } else {
+      setState(() {
+        checkpassword = false;
+      });
+    }
+
+    if (confirmpasswordvalidate == true || checkpassword == true) {
+      setState(() {
+        passworderrormessage = true;
+      });
+    } else {
+      setState(() {
+        passworderrormessage = false;
+      });
+    }
+
+    if (passworderrormessage == true) {
+      if (confirmpasswordvalidate == true) {
+        errormessage = "กรุณายืนยันรหัสผ่าน";
+      } else {
+        errormessage = "รหัสผ่านไม่ตรงกัน";
+      }
+    }
+
     if (type == Type.none) {
       setState(() {
         typevalidate = true;
@@ -82,6 +98,43 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         typevalidate = false;
       });
+    }
+
+    if (usernameController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty &&
+        confirmpasswordController.text.isNotEmpty &&
+        checkpassword == false &&
+        type != Type.none) {
+      String typevalue = "";
+      switch (type) {
+        case Type.user:
+          typevalue = "user";
+          break;
+        case Type.helper:
+          typevalue = "helper";
+          break;
+        default:
+          typevalue = "";
+      }
+      var regBody = {
+        "username": usernameController.text,
+        "password": passwordController.text,
+        "type": typevalue,
+      };
+
+      var response = await http.post(Uri.parse(registration),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(regBody));
+
+      var jsonResponse = jsonDecode(response.body);
+
+      print(jsonResponse['status']);
+
+      if (jsonResponse['status']) {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+      } else {
+        print("Something Went Wrong");
+      }
     }
   }
 
@@ -244,8 +297,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                         suffixIcon: togglePassword(),
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
-                                        errorText: confirmpasswordvalidate
-                                            ? "โปรดยืนยันรหัสผ่าน"
+                                        errorText: passworderrormessage
+                                            ? errormessage
                                             : null,
                                       ),
                                       style: const TextStyle(
@@ -325,7 +378,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         typevalidate
                                             ? const Text("โปรดเลือกบทบาท",
                                                 style: AppText.error)
-                                            : const SizedBox()
+                                            : const SizedBox(),
                                       ],
                                     ),
                                   ),
