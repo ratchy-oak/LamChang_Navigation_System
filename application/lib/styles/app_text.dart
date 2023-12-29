@@ -21,4 +21,8 @@ class AppText {
     fontSize: 20,
     fontWeight: FontWeight.w400,
   );
+  static const error = TextStyle(
+    color: AppColors.red,
+    fontSize: 12,
+  );
 }
