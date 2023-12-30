@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:application/config/app_routes.dart';
+import 'package:application/pages/home_page.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
         "password": passwordController.text
       };
 
-      var response = await http.post(Uri.parse(registration),
+      var response = await http.post(Uri.parse(login),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(reqBody));
 
@@ -72,7 +73,8 @@ class _LoginPageState extends State<LoginPage> {
         var myToken = jsonResponse['token'];
         prefs.setString('token', myToken);
         // ignore: use_build_context_synchronously
-        Navigator.of(context).pushReplacementNamed();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => HomePage(token: myToken)));
       }
     }
   }
