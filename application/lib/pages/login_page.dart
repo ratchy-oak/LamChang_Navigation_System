@@ -20,6 +20,9 @@ class _LoginPageState extends State<LoginPage> {
   bool _isSecurePassword = true;
   bool usernamevalidate = false;
   bool passwordvalidate = false;
+  bool switcherrormessage = false;
+  bool checkerror = false;
+  String errormessage = "";
   late SharedPreferences prefs;
 
   @override
@@ -56,8 +59,29 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
 
+    if (passwordvalidate == true || checkerror == true) {
+      setState(() {
+        switcherrormessage = true;
+      });
+    } else {
+      setState(() {
+        switcherrormessage = false;
+      });
+    }
+
+    if (switcherrormessage == true) {
+      if (passwordvalidate == true) {
+        errormessage = "กรุณาป้อนรหัสผ่าน";
+      } else {
+        errormessage = "ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง";
+        checkerror = false;
+        return;
+      }
+    }
+
     if (usernameController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty) {
+        passwordController.text.isNotEmpty &&
+        checkerror == false) {
       var reqBody = {
         "username": usernameController.text,
         "password": passwordController.text
@@ -69,12 +93,15 @@ class _LoginPageState extends State<LoginPage> {
 
       var jsonResponse = jsonDecode(response.body);
 
-      if (jsonResponse['status']) {
+      if (jsonResponse['status'] == true) {
         var myToken = jsonResponse['token'];
         prefs.setString('token', myToken);
         // ignore: use_build_context_synchronously
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => HomePage(token: myToken)));
+      } else {
+        checkerror = true;
+        loginUser();
       }
     }
   }
@@ -166,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
                                         errorText: usernamevalidate
-                                            ? "โปรดป้อนชื่อผู้ใช้"
+                                            ? "กรุณาป้อนชื่อผู้ใช้"
                                             : null,
                                       ),
                                       style: const TextStyle(
@@ -201,8 +228,8 @@ class _LoginPageState extends State<LoginPage> {
                                         suffixIcon: togglePassword(),
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
-                                        errorText: passwordvalidate
-                                            ? "โปรดป้อนรหัสผ่าน"
+                                        errorText: switcherrormessage
+                                            ? errormessage
                                             : null,
                                       ),
                                       style: const TextStyle(
@@ -218,9 +245,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 40,
                           ),
                           TextButton(
-                            onPressed: () {
-                              loginUser();
-                            },
+                            onPressed: () {},
                             style: TextButton.styleFrom(
                               foregroundColor: AppColors.grey,
                             ),

@@ -7,11 +7,12 @@ exports.register = async(req, res, next) => {
         const successRes = await UserService.registerUser(username, password, type)
 
         res.json({
-            status:true, 
-            success:"User Registered Successfully"
+            status:true
         })
     } catch(error) {
-        throw error
+        res.json({
+            status:false
+        })
     }
 }
 
@@ -37,6 +38,8 @@ exports.login = async(req, res, next) => {
 
         res.status(200).json({status:true, token:token})
     } catch(error) {
-        throw error
+        res.json({
+            status:false
+        })
     }   
 }
