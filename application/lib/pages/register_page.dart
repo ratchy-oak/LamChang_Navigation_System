@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:application/config/app_routes.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
@@ -46,23 +45,23 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     if (usernamevalidate == true || checkusername == true) {
-      setState(() {
-        usernameerrormessage = true;
-      });
+      if (usernamevalidate == true) {
+        errormessage2 = "กรุณาป้อนชื่อผู้ใช้";
+        setState(() {
+          usernameerrormessage = true;
+        });
+      } else {
+        errormessage2 = "มีชื่อผู้ใช้นี้ในระบบแล้ว";
+        setState(() {
+          usernameerrormessage = true;
+          checkusername = false;
+        });
+        return;
+      }
     } else {
       setState(() {
         usernameerrormessage = false;
       });
-    }
-
-    if (usernameerrormessage == true) {
-      if (usernamevalidate == true) {
-        errormessage2 = "กรุณาป้อนชื่อผู้ใช้";
-      } else {
-        errormessage2 = "มีชื่อผู้ใช้นี้ในระบบแล้ว";
-        checkusername = false;
-        return;
-      }
     }
 
     if (passwordController.text.isEmpty) {
@@ -96,21 +95,21 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     if (confirmpasswordvalidate == true || checkpassword == true) {
-      setState(() {
-        passworderrormessage = true;
-      });
+      if (confirmpasswordvalidate == true) {
+        errormessage = "กรุณายืนยันรหัสผ่าน";
+        setState(() {
+          passworderrormessage = true;
+        });
+      } else {
+        errormessage = "รหัสผ่านไม่ตรงกัน";
+        setState(() {
+          passworderrormessage = true;
+        });
+      }
     } else {
       setState(() {
         passworderrormessage = false;
       });
-    }
-
-    if (passworderrormessage == true) {
-      if (confirmpasswordvalidate == true) {
-        errormessage = "กรุณายืนยันรหัสผ่าน";
-      } else {
-        errormessage = "รหัสผ่านไม่ตรงกัน";
-      }
     }
 
     if (type == Type.none) {
@@ -156,7 +155,9 @@ class _RegisterPageState extends State<RegisterPage> {
         // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacementNamed(AppRoutes.login);
       } else {
-        checkusername = true;
+        setState(() {
+          checkusername = true;
+        });
         registerUser();
       }
     }
@@ -485,8 +486,8 @@ class _RegisterPageState extends State<RegisterPage> {
         });
       },
       icon: _isSecurePassword
-          ? const Icon(Icons.visibility)
-          : const Icon(Icons.visibility_off),
+          ? const Icon(Icons.visibility_off)
+          : const Icon(Icons.visibility),
       color: AppColors.grey,
     );
   }

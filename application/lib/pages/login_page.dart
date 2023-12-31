@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:application/config/app_routes.dart';
 import 'package:application/pages/home_page.dart';
 import 'package:application/styles/app_colors.dart';
@@ -60,23 +59,23 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     if (passwordvalidate == true || checkerror == true) {
-      setState(() {
-        switcherrormessage = true;
-      });
+      if (passwordvalidate == true) {
+        errormessage = "กรุณาป้อนรหัสผ่าน";
+        setState(() {
+          switcherrormessage = true;
+        });
+      } else {
+        errormessage = "ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง";
+        setState(() {
+          switcherrormessage = true;
+          checkerror = false;
+        });
+        return;
+      }
     } else {
       setState(() {
         switcherrormessage = false;
       });
-    }
-
-    if (switcherrormessage == true) {
-      if (passwordvalidate == true) {
-        errormessage = "กรุณาป้อนรหัสผ่าน";
-      } else {
-        errormessage = "ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง";
-        checkerror = false;
-        return;
-      }
     }
 
     if (usernameController.text.isNotEmpty &&
@@ -329,8 +328,8 @@ class _LoginPageState extends State<LoginPage> {
         });
       },
       icon: _isSecurePassword
-          ? const Icon(Icons.visibility)
-          : const Icon(Icons.visibility_off),
+          ? const Icon(Icons.visibility_off)
+          : const Icon(Icons.visibility),
       color: AppColors.grey,
     );
   }
