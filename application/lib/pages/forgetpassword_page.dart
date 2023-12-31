@@ -1,22 +1,16 @@
-import 'dart:convert';
 import 'package:application/pages/login_page.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import '../config/config.dart';
 
-enum Type { none, user, helper }
-
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class ForgetPasswordPage extends StatefulWidget {
+  const ForgetPasswordPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<ForgetPasswordPage> createState() => _ForgetPasswordPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  var type = Type.none;
+class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   bool _isSecurePassword = true;
   bool usernamevalidate = false;
   bool checkusername = false;
@@ -27,13 +21,12 @@ class _RegisterPageState extends State<RegisterPage> {
   bool checkpassword = false;
   bool passworderrormessage = false;
   String errormessage = "";
-  bool typevalidate = false;
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmpasswordController = TextEditingController();
 
-  void registerUser() async {
+  void forgetPassword() async {
     if (usernameController.text.isEmpty) {
       setState(() {
         usernamevalidate = true;
@@ -51,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
           usernameerrormessage = true;
         });
       } else {
-        errormessage2 = "มีชื่อผู้ใช้นี้ในระบบแล้ว";
+        errormessage2 = "ไม่พบชื่อผู้ใช้ระบบ";
         setState(() {
           usernameerrormessage = true;
           checkusername = false;
@@ -112,56 +105,11 @@ class _RegisterPageState extends State<RegisterPage> {
       });
     }
 
-    if (type == Type.none) {
-      setState(() {
-        typevalidate = true;
-      });
-    } else {
-      setState(() {
-        typevalidate = false;
-      });
-    }
-
     if (usernameController.text.isNotEmpty &&
         checkusername == false &&
         passwordController.text.isNotEmpty &&
         confirmpasswordController.text.isNotEmpty &&
-        checkpassword == false &&
-        type != Type.none) {
-      String typevalue = "";
-      switch (type) {
-        case Type.user:
-          typevalue = "user";
-          break;
-        case Type.helper:
-          typevalue = "helper";
-          break;
-        default:
-          typevalue = "";
-      }
-      var regBody = {
-        "username": usernameController.text,
-        "password": passwordController.text,
-        "type": typevalue,
-      };
-
-      var response = await http.post(Uri.parse(registration),
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode(regBody));
-
-      var jsonResponse = jsonDecode(response.body);
-
-      if (jsonResponse['status'] == true) {
-        // ignore: use_build_context_synchronously
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const LoginPage()));
-      } else {
-        setState(() {
-          checkusername = true;
-        });
-        registerUser();
-      }
-    }
+        checkpassword == false) {}
   }
 
   @override
@@ -182,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "สมัครสมาชิก",
+                    "รีเซ็ตรหัสผ่าน",
                     style: AppText.header,
                   ),
                   Text(
@@ -279,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       enableSuggestions: false,
                                       autocorrect: false,
                                       decoration: InputDecoration(
-                                        hintText: "รหัสผ่าน",
+                                        hintText: "รหัสผ่านใหม่",
                                         hintStyle: const TextStyle(
                                           color: AppColors.grey,
                                         ),
@@ -333,82 +281,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: AppColors.underline,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Expanded(
-                                              child: RadioListTile(
-                                                activeColor: AppColors.yellow,
-                                                title: const Text(
-                                                  "ผู้ประสบเหตุ",
-                                                  style: AppText.body,
-                                                ),
-                                                value: Type.user,
-                                                visualDensity:
-                                                    const VisualDensity(
-                                                  horizontal: VisualDensity
-                                                      .minimumDensity,
-                                                  vertical: VisualDensity
-                                                      .minimumDensity,
-                                                ),
-                                                contentPadding: EdgeInsets.zero,
-                                                groupValue: type,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    type = Type.user;
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: RadioListTile(
-                                                activeColor: AppColors.yellow,
-                                                title: const Text(
-                                                  "เจ้าหน้าที่",
-                                                  style: AppText.body,
-                                                ),
-                                                value: Type.helper,
-                                                visualDensity:
-                                                    const VisualDensity(
-                                                        horizontal:
-                                                            VisualDensity
-                                                                .minimumDensity,
-                                                        vertical: VisualDensity
-                                                            .minimumDensity),
-                                                contentPadding: EdgeInsets.zero,
-                                                groupValue: type,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    type = Type.helper;
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        typevalidate
-                                            ? const Text("กรุณาเลือกบทบาท",
-                                                style: AppText.error)
-                                            : const SizedBox(),
-                                      ],
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ),
@@ -428,13 +300,13 @@ class _RegisterPageState extends State<RegisterPage> {
                               type: MaterialType.transparency,
                               child: InkWell(
                                 onTap: () {
-                                  registerUser();
+                                  forgetPassword();
                                 },
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(50)),
                                 child: const Center(
                                   child: Text(
-                                    "สมัครสมาชิก",
+                                    "รีเซ็ตรหัสผ่าน",
                                     style: AppText.button,
                                   ),
                                 ),
@@ -448,7 +320,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                "มีบัญชีแล้ว ?",
+                                "กลับสู่หน้า",
                                 style: AppText.body,
                               ),
                               TextButton(

@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:application/config/app_routes.dart';
+import 'package:application/pages/forgetpassword_page.dart';
 import 'package:application/pages/home_page.dart';
+import 'package:application/pages/register_page.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
@@ -244,7 +245,13 @@ class _LoginPageState extends State<LoginPage> {
                             height: 40,
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgetPasswordPage()));
+                            },
                             style: TextButton.styleFrom(
                               foregroundColor: AppColors.grey,
                             ),
@@ -289,13 +296,16 @@ class _LoginPageState extends State<LoginPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                "ยังไม่มีบัญชี ? ",
+                                "ยังไม่มีบัญชี ?",
                                 style: AppText.body,
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(AppRoutes.register);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RegisterPage()));
                                 },
                                 style: TextButton.styleFrom(
                                   foregroundColor: AppColors.green,

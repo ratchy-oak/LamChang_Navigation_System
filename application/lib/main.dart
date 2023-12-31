@@ -1,5 +1,5 @@
+import 'package:application/pages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:application/config/app_routes.dart';
 import 'package:application/styles/app_colors.dart';
 
 void main() {
@@ -19,8 +19,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         unselectedWidgetColor: AppColors.yellow,
       ),
-      initialRoute: AppRoutes.login,
-      routes: AppRoutes.pages,
+      home: const LoginPage(),
     );
   }
 }
