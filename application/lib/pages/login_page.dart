@@ -20,8 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   bool _isSecurePassword = true;
   bool usernamevalidate = false;
   bool passwordvalidate = false;
-  bool switcherrormessage = false;
   bool checkerror = false;
+  bool switcherror = false;
   String errormessage = "";
   late SharedPreferences prefs;
 
@@ -63,19 +63,19 @@ class _LoginPageState extends State<LoginPage> {
       if (passwordvalidate == true) {
         errormessage = "กรุณาป้อนรหัสผ่าน";
         setState(() {
-          switcherrormessage = true;
+          switcherror = true;
         });
       } else {
         errormessage = "ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง";
         setState(() {
-          switcherrormessage = true;
+          switcherror = true;
           checkerror = false;
         });
         return;
       }
     } else {
       setState(() {
-        switcherrormessage = false;
+        switcherror = false;
       });
     }
 
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(
-              height: 80,
+              height: 60,
             ),
             const Padding(
               padding: EdgeInsets.all(20),
@@ -134,19 +134,19 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 40,
             ),
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(
                   color: AppColors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
-                    topRight: Radius.circular(60),
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.only(top: 5),
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -228,9 +228,8 @@ class _LoginPageState extends State<LoginPage> {
                                         suffixIcon: togglePassword(),
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
-                                        errorText: switcherrormessage
-                                            ? errormessage
-                                            : null,
+                                        errorText:
+                                            switcherror ? errormessage : null,
                                       ),
                                       style: const TextStyle(
                                         color: AppColors.black,
@@ -313,9 +312,6 @@ class _LoginPageState extends State<LoginPage> {
                                 child: const Text("สมัครสมาชิก"),
                               ),
                             ],
-                          ),
-                          const SizedBox(
-                            height: 30,
                           ),
                         ],
                       ),

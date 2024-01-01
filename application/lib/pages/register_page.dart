@@ -20,13 +20,13 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isSecurePassword = true;
   bool usernamevalidate = false;
   bool checkusername = false;
-  bool usernameerrormessage = false;
-  String errormessage2 = "";
+  bool switchusernameerror = false;
+  String usernameerrormessage = "";
   bool passwordvalidate = false;
   bool confirmpasswordvalidate = false;
   bool checkpassword = false;
-  bool passworderrormessage = false;
-  String errormessage = "";
+  bool switchpassworderror = false;
+  String passworderrormessage = "";
   bool typevalidate = false;
 
   TextEditingController usernameController = TextEditingController();
@@ -46,21 +46,21 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (usernamevalidate == true || checkusername == true) {
       if (usernamevalidate == true) {
-        errormessage2 = "กรุณาป้อนชื่อผู้ใช้";
+        usernameerrormessage = "กรุณาป้อนชื่อผู้ใช้";
         setState(() {
-          usernameerrormessage = true;
+          switchusernameerror = true;
         });
       } else {
-        errormessage2 = "มีชื่อผู้ใช้นี้ในระบบแล้ว";
+        usernameerrormessage = "มีชื่อผู้ใช้นี้ในระบบแล้ว";
         setState(() {
-          usernameerrormessage = true;
+          switchusernameerror = true;
           checkusername = false;
         });
         return;
       }
     } else {
       setState(() {
-        usernameerrormessage = false;
+        switchusernameerror = false;
       });
     }
 
@@ -96,19 +96,19 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (confirmpasswordvalidate == true || checkpassword == true) {
       if (confirmpasswordvalidate == true) {
-        errormessage = "กรุณายืนยันรหัสผ่าน";
+        passworderrormessage = "กรุณายืนยันรหัสผ่าน";
         setState(() {
-          passworderrormessage = true;
+          switchpassworderror = true;
         });
       } else {
-        errormessage = "รหัสผ่านไม่ตรงกัน";
+        passworderrormessage = "รหัสผ่านไม่ตรงกัน";
         setState(() {
-          passworderrormessage = true;
+          switchpassworderror = true;
         });
       }
     } else {
       setState(() {
-        passworderrormessage = false;
+        switchpassworderror = false;
       });
     }
 
@@ -174,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(
-              height: 80,
+              height: 60,
             ),
             const Padding(
               padding: EdgeInsets.all(20),
@@ -193,19 +193,19 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 40,
             ),
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(
                   color: AppColors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
-                    topRight: Radius.circular(60),
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.only(top: 5),
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -251,8 +251,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                         border: InputBorder.none,
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
-                                        errorText: usernameerrormessage
-                                            ? errormessage2
+                                        errorText: switchusernameerror
+                                            ? usernameerrormessage
                                             : null,
                                       ),
                                       style: const TextStyle(
@@ -323,8 +323,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                         suffixIcon: togglePassword(),
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
-                                        errorText: passworderrormessage
-                                            ? errormessage
+                                        errorText: switchpassworderror
+                                            ? passworderrormessage
                                             : null,
                                       ),
                                       style: const TextStyle(
@@ -413,7 +413,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           const SizedBox(
-                            height: 60,
+                            height: 55,
                           ),
                           Container(
                             height: 50,
@@ -465,9 +465,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: const Text("เข้าสู่ระบบ"),
                               ),
                             ],
-                          ),
-                          const SizedBox(
-                            height: 30,
                           ),
                         ],
                       ),
