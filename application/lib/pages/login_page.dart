@@ -100,7 +100,9 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => HomePage(token: myToken)));
       } else {
-        checkerror = true;
+        setState(() {
+          checkerror = true;
+        });
         loginUser();
       }
     }
@@ -115,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(
-              height: 60,
+              height: 75,
             ),
             const Padding(
               padding: EdgeInsets.all(20),

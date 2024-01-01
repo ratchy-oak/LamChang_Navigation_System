@@ -19,6 +19,15 @@ class UserService {
         }
     }
 
+    static async forgetpassword(username, password) {
+        try {
+            const updateUser = UserModel.updateOne({username}, {$set: {password}})
+            return await updateUser.
+        } catch(error) {
+            throw error
+        }
+    }
+
     static async generateToken(tokenData, secretKey, jwt_expire) {
         return jwt.sign(tokenData, secretKey, {expiresIn:jwt_expire})
     }

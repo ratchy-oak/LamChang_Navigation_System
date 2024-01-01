@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'package:application/pages/login_page.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import '../config/config.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   const ForgetPasswordPage({super.key});
@@ -21,6 +25,17 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   bool checkpassword = false;
   bool switchpassworderror = false;
   String passworderorrmessage = "";
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedPref();
+  }
+
+  void initSharedPref() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -109,7 +124,29 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
         checkusername == false &&
         passwordController.text.isNotEmpty &&
         confirmpasswordController.text.isNotEmpty &&
-        checkpassword == false) {}
+        checkpassword == false) {
+      var reqBody = {
+        "username": usernameController.text,
+        "password": passwordController.text
+      };
+
+      var response = await http.post(Uri.parse(forgetpassword),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(reqBody));
+
+      var jsonResponse = jsonDecode(response.body);
+
+      if (jsonResponse['status'] == true) {
+        // ignore: use_build_context_synchronously
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoginPage()));
+      } else {
+        setState(() {
+          checkusername = true;
+        });
+        forgetPassword();
+      }
+    }
   }
 
   @override
@@ -122,7 +159,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(
-              height: 60,
+              height: 75,
             ),
             const Padding(
               padding: EdgeInsets.all(20),

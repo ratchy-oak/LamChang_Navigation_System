@@ -174,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(
-              height: 60,
+              height: 75,
             ),
             const Padding(
               padding: EdgeInsets.all(20),

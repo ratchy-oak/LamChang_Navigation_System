@@ -6,6 +6,10 @@ exports.register = async(req, res, next) => {
 
         const successRes = await UserService.registerUser(username, password, type)
 
+        if(!successRes) {
+            throw new Error("Can't register")
+        }
+
         res.json({
             status:true
         })
@@ -18,7 +22,7 @@ exports.register = async(req, res, next) => {
 
 exports.login = async(req, res, next) => {
     try {
-        const {username, password, type} = req.body
+        const {username, password} = req.body
 
         const user = await UserService.checkuser(username);
 
@@ -37,6 +41,28 @@ exports.login = async(req, res, next) => {
         const token = await UserService.generateToken(tokenData, "secretKey", "1d")
 
         res.status(200).json({status:true, token:token})
+    } catch(error) {
+        res.json({
+            status:false
+        })
+    }   
+}
+
+exports.forgetpassword = async(req, res, next) => {
+    try {
+        const {username, password} = req.body
+
+        const user = await UserService.checkuser(username);
+
+        if(!user) {
+            throw new Error("User don't exist")
+        }
+
+        const successRes = await UserService.forgetpassword(username, password)
+
+        if(!successRes) {
+            throw new Error("Can't reset password")
+        }
     } catch(error) {
         res.json({
             status:false
