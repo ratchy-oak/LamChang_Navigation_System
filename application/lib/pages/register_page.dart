@@ -355,7 +355,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                               child: RadioListTile(
                                                 activeColor: AppColors.yellow,
                                                 title: const Text(
-                                                  "ผู้ประสบเหตุ",
+                                                  "บุคคลทั่วไป",
                                                   style: AppText.body,
                                                 ),
                                                 value: Type.user,
