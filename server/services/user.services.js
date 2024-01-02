@@ -22,7 +22,7 @@ class UserService {
     static async forgetpassword(username, password) {
         try {
             const updateUser = UserModel.updateOne({username}, {$set: {password}})
-            return await updateUser.
+            return await updateUser.findOneAndUpdate()
         } catch(error) {
             throw error
         }

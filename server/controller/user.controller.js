@@ -22,7 +22,7 @@ exports.register = async(req, res, next) => {
 
 exports.login = async(req, res, next) => {
     try {
-        const {username, password} = req.body
+        const {username, password, type} = req.body
 
         const user = await UserService.checkuser(username);
 
@@ -50,7 +50,7 @@ exports.login = async(req, res, next) => {
 
 exports.forgetpassword = async(req, res, next) => {
     try {
-        const {username, password} = req.body
+        const {username, password, type} = req.body
 
         const user = await UserService.checkuser(username);
 
@@ -63,6 +63,10 @@ exports.forgetpassword = async(req, res, next) => {
         if(!successRes) {
             throw new Error("Can't reset password")
         }
+
+        res.json({
+            status:true
+        })
     } catch(error) {
         res.json({
             status:false

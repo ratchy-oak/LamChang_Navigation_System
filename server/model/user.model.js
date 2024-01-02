@@ -22,11 +22,22 @@ const userSchema = new Schema({
 
 userSchema.pre('save', async function() {
     try {
-        var user = this;
+        var user = this
         const salt = await(bcrypt.genSalt(10))
         const hashpass = await bcrypt.hash(user.password, salt)
 
-        user.password = hashpass;
+        user.password = hashpass
+    } catch (error) {
+        throw error
+    }
+})
+
+userSchema.pre("findOneAndUpdate", async function () {
+    try {
+        const salt = await(bcrypt.genSalt(10))
+        const hashpass = await bcrypt.hash(this._update.$set.password, salt)
+
+        this._update.$set.password = hashpass
     } catch (error) {
         throw error
     }
