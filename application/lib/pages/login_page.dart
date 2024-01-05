@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:application/pages/forgetpassword_page.dart';
-import 'package:application/pages/home_page.dart';
+import 'package:application/pages/helper_page.dart';
 import 'package:application/pages/register_page.dart';
+import 'package:application/pages/user_page.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../config/config.dart';
 
@@ -18,11 +20,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isSecurePassword = true;
-  bool usernamevalidate = false;
-  bool passwordvalidate = false;
-  bool checkerror = false;
-  bool switcherror = false;
-  String errormessage = "";
+  bool usernameValidate = false;
+  bool passwordValidate = false;
+  bool checkError = false;
+  bool switchError = false;
+  String errorMessage = "";
   late SharedPreferences prefs;
 
   @override
@@ -41,47 +43,47 @@ class _LoginPageState extends State<LoginPage> {
   void loginUser() async {
     if (usernameController.text.isEmpty) {
       setState(() {
-        usernamevalidate = true;
+        usernameValidate = true;
       });
     } else {
       setState(() {
-        usernamevalidate = false;
+        usernameValidate = false;
       });
     }
 
     if (passwordController.text.isEmpty) {
       setState(() {
-        passwordvalidate = true;
+        passwordValidate = true;
       });
     } else {
       setState(() {
-        passwordvalidate = false;
+        passwordValidate = false;
       });
     }
 
-    if (passwordvalidate == true || checkerror == true) {
-      if (passwordvalidate == true) {
-        errormessage = "กรุณาป้อนรหัสผ่าน";
+    if (passwordValidate == true || checkError == true) {
+      if (passwordValidate == true) {
+        errorMessage = "กรุณาป้อนรหัสผ่าน";
         setState(() {
-          switcherror = true;
+          switchError = true;
         });
       } else {
-        errormessage = "ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง";
+        errorMessage = "ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง";
         setState(() {
-          switcherror = true;
-          checkerror = false;
+          switchError = true;
+          checkError = false;
         });
         return;
       }
     } else {
       setState(() {
-        switcherror = false;
+        switchError = false;
       });
     }
 
     if (usernameController.text.isNotEmpty &&
         passwordController.text.isNotEmpty &&
-        checkerror == false) {
+        checkError == false) {
       var reqBody = {
         "username": usernameController.text,
         "password": passwordController.text
@@ -96,12 +98,23 @@ class _LoginPageState extends State<LoginPage> {
       if (jsonResponse['status'] == true) {
         var myToken = jsonResponse['token'];
         prefs.setString('token', myToken);
-        // ignore: use_build_context_synchronously
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => HomePage(token: myToken)));
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(myToken);
+        if (decodedToken['type'] == "user") {
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => UserPage(token: myToken)));
+        } else {
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HelperPage(token: myToken)));
+        }
       } else {
         setState(() {
-          checkerror = true;
+          checkError = true;
         });
         loginUser();
       }
@@ -194,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                                         border: InputBorder.none,
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
-                                        errorText: usernamevalidate
+                                        errorText: usernameValidate
                                             ? "กรุณาป้อนชื่อผู้ใช้"
                                             : null,
                                       ),
@@ -231,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
                                         errorText:
-                                            switcherror ? errormessage : null,
+                                            switchError ? errorMessage : null,
                                       ),
                                       style: const TextStyle(
                                         color: AppColors.black,

@@ -16,15 +16,15 @@ class ForgetPasswordPage extends StatefulWidget {
 
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   bool _isSecurePassword = true;
-  bool usernamevalidate = false;
-  bool checkusername = false;
-  bool switchusernameerror = false;
-  String usernameerrormessage = "";
-  bool passwordvalidate = false;
-  bool confirmpasswordvalidate = false;
-  bool checkpassword = false;
-  bool switchpassworderror = false;
-  String passworderorrmessage = "";
+  bool usernameValidate = false;
+  bool checkUsername = false;
+  bool switchUsernameError = false;
+  String usernameErrorMessage = "";
+  bool passwordValidate = false;
+  bool confirmPasswordValidate = false;
+  bool checkPassword = false;
+  bool switchPasswordError = false;
+  String passwordErorrMessage = "";
   late SharedPreferences prefs;
 
   @override
@@ -44,87 +44,87 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   void forgetPassword() async {
     if (usernameController.text.isEmpty) {
       setState(() {
-        usernamevalidate = true;
+        usernameValidate = true;
       });
     } else {
       setState(() {
-        usernamevalidate = false;
+        usernameValidate = false;
       });
     }
 
-    if (usernamevalidate == true || checkusername == true) {
-      if (usernamevalidate == true) {
-        usernameerrormessage = "กรุณาป้อนชื่อผู้ใช้";
+    if (usernameValidate == true || checkUsername == true) {
+      if (usernameValidate == true) {
+        usernameErrorMessage = "กรุณาป้อนชื่อผู้ใช้";
         setState(() {
-          switchusernameerror = true;
+          switchUsernameError = true;
         });
       } else {
-        usernameerrormessage = "ไม่พบชื่อผู้ใช้ระบบ";
+        usernameErrorMessage = "ไม่พบชื่อผู้ใช้ระบบ";
         setState(() {
-          switchusernameerror = true;
-          checkusername = false;
+          switchUsernameError = true;
+          checkUsername = false;
         });
         return;
       }
     } else {
       setState(() {
-        switchusernameerror = false;
+        switchUsernameError = false;
       });
     }
 
     if (passwordController.text.isEmpty) {
       setState(() {
-        passwordvalidate = true;
+        passwordValidate = true;
       });
     } else {
       setState(() {
-        passwordvalidate = false;
+        passwordValidate = false;
       });
     }
 
     if (confirmpasswordController.text.isEmpty) {
       setState(() {
-        confirmpasswordvalidate = true;
+        confirmPasswordValidate = true;
       });
     } else {
       setState(() {
-        confirmpasswordvalidate = false;
+        confirmPasswordValidate = false;
       });
     }
 
     if (passwordController.text != confirmpasswordController.text) {
       setState(() {
-        checkpassword = true;
+        checkPassword = true;
       });
     } else {
       setState(() {
-        checkpassword = false;
+        checkPassword = false;
       });
     }
 
-    if (confirmpasswordvalidate == true || checkpassword == true) {
-      if (confirmpasswordvalidate == true) {
-        passworderorrmessage = "กรุณายืนยันรหัสผ่าน";
+    if (confirmPasswordValidate == true || checkPassword == true) {
+      if (confirmPasswordValidate == true) {
+        passwordErorrMessage = "กรุณายืนยันรหัสผ่าน";
         setState(() {
-          switchpassworderror = true;
+          switchPasswordError = true;
         });
       } else {
-        passworderorrmessage = "รหัสผ่านไม่ตรงกัน";
+        passwordErorrMessage = "รหัสผ่านไม่ตรงกัน";
         setState(() {
-          switchpassworderror = true;
+          switchPasswordError = true;
         });
       }
     } else {
       setState(() {
-        switchpassworderror = false;
+        switchPasswordError = false;
       });
     }
 
     if (usernameController.text.isNotEmpty &&
-        checkusername == false &&
+        checkUsername == false &&
         passwordController.text.isNotEmpty &&
         confirmpasswordController.text.isNotEmpty &&
-        checkpassword == false) {
+        checkPassword == false) {
       var reqBody = {
         "username": usernameController.text,
         "password": passwordController.text
@@ -142,7 +142,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
             MaterialPageRoute(builder: (context) => const LoginPage()));
       } else {
         setState(() {
-          checkusername = true;
+          checkUsername = true;
         });
         forgetPassword();
       }
@@ -236,8 +236,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                         border: InputBorder.none,
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
-                                        errorText: switchusernameerror
-                                            ? usernameerrormessage
+                                        errorText: switchUsernameError
+                                            ? usernameErrorMessage
                                             : null,
                                       ),
                                       style: const TextStyle(
@@ -272,7 +272,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                         suffixIcon: togglePassword(),
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
-                                        errorText: passwordvalidate
+                                        errorText: passwordValidate
                                             ? "กรุณาป้อนรหัสผ่าน"
                                             : null,
                                       ),
@@ -308,8 +308,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                                         suffixIcon: togglePassword(),
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
-                                        errorText: switchpassworderror
-                                            ? passworderorrmessage
+                                        errorText: switchPasswordError
+                                            ? passwordErorrMessage
                                             : null,
                                       ),
                                       style: const TextStyle(
