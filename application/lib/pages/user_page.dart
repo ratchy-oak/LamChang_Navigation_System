@@ -25,13 +25,6 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text("User Page")],
-        ),
-      ),
-    );
+    return const Scaffold();
   }
 }
