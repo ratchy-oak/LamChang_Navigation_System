@@ -38,7 +38,7 @@ exports.login = async(req, res, next) => {
 
         let tokenData = {_id:user._id,username:user.username,type:user.type}
 
-        const token = await UserService.generateToken(tokenData, "secretKey", "1d")
+        const token = await UserService.generateToken(tokenData, "secretKey")
 
         res.status(200).json({status:true, token:token})
     } catch(error) {
