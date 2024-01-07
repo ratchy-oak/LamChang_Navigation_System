@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class UserPage extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
@@ -23,15 +25,22 @@ class _UserPageState extends State<UserPage> {
     type = jwtDecodedToken['type'];
   }
 
+  static const LatLng lamChangCity =
+      LatLng(18.793739574625956, 98.9917824807691);
+  final Completer<GoogleMapController> _controller = Completer();
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text("User Page")],
-        ),
+    return Scaffold(
+        body: GoogleMap(
+      mapType: MapType.normal,
+      initialCameraPosition: const CameraPosition(
+        target: lamChangCity,
+        zoom: 17,
       ),
-    );
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
+      },
+    ));
   }
 }
