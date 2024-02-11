@@ -19,22 +19,6 @@ class _HelperPageState extends State<HelperPage> {
   late String username;
   late String type;
   late String titleName;
-
-  @override
-  void initState() {
-    super.initState();
-    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
-
-    username = jwtDecodedToken['username'];
-    type = jwtDecodedToken['type'];
-    if (type == "user") {
-      type = "ผู้ใช้งาน ";
-    } else {
-      type = "เจ้าหน้าที่ ";
-    }
-    titleName = type + username;
-  }
-
   static const LatLng lamChangCity =
       LatLng(18.793739574625956, 98.9917824807691);
   final Completer<GoogleMapController> _controller = Completer();
@@ -65,6 +49,21 @@ class _HelperPageState extends State<HelperPage> {
     final GoogleMapController controller = await _controller.future;
     currentLocation = (await getCurrentLocation())!;
     controller.animateCamera(CameraUpdate.newLatLng(lamChangCity));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+
+    username = jwtDecodedToken['username'];
+    type = jwtDecodedToken['type'];
+    if (type == "user") {
+      type = "ผู้ใช้งาน ";
+    } else {
+      type = "เจ้าหน้าที่ ";
+    }
+    titleName = type + username;
   }
 
   @override
