@@ -109,6 +109,8 @@ class _HelperPageState extends State<HelperPage> {
               child: Text("Loading.."),
             )
           : GoogleMap(
+              myLocationEnabled: true,
+              myLocationButtonEnabled: false,
               onMapCreated: ((GoogleMapController controller) =>
                   mapController.complete(controller)),
               mapType: MapType.hybrid,
@@ -121,11 +123,6 @@ class _HelperPageState extends State<HelperPage> {
                   markerId: MarkerId("lamChangCity"),
                   icon: BitmapDescriptor.defaultMarker,
                   position: lamChangCity,
-                ),
-                Marker(
-                  markerId: const MarkerId("currentLocation"),
-                  icon: BitmapDescriptor.defaultMarker,
-                  position: currentP!,
                 ),
               },
             ),
