@@ -50,10 +50,29 @@ class _UserPageState extends State<UserPage> {
           currentP =
               LatLng(currentLocation.latitude!, currentLocation.longitude!);
           // ignore: avoid_print
-          print(currentP);
+          print(currentP!);
         });
       }
     });
+  }
+
+  Future<void> cameraToPosition(LatLng pos) async {
+    final GoogleMapController controller = await mapController.future;
+    CameraPosition newCameraPosition = CameraPosition(
+      target: pos,
+      zoom: 17,
+    );
+    await controller.animateCamera(
+      CameraUpdate.newCameraPosition(newCameraPosition),
+    );
+  }
+
+  Future goToLamChangCity() async {
+    cameraToPosition(lamChangCity);
+  }
+
+  Future goToMe() async {
+    cameraToPosition(currentP!);
   }
 
   @override
@@ -78,12 +97,20 @@ class _UserPageState extends State<UserPage> {
       appBar: AppBar(
         backgroundColor: AppColors.green,
         title: Text(titleName),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.maps_home_work_rounded),
+            onPressed: goToLamChangCity,
+          )
+        ],
       ),
       body: currentP == null
           ? const Center(
               child: Text("Loading.."),
             )
           : GoogleMap(
+              onMapCreated: ((GoogleMapController controller) =>
+                  mapController.complete(controller)),
               mapType: MapType.hybrid,
               initialCameraPosition: const CameraPosition(
                 target: lamChangCity,
@@ -91,17 +118,25 @@ class _UserPageState extends State<UserPage> {
               ),
               markers: {
                 const Marker(
-                  markerId: MarkerId("Lamchang City"),
+                  markerId: MarkerId("lamChangCity"),
                   icon: BitmapDescriptor.defaultMarker,
                   position: lamChangCity,
                 ),
                 Marker(
-                  markerId: const MarkerId("Current Location"),
+                  markerId: const MarkerId("currentLocation"),
                   icon: BitmapDescriptor.defaultMarker,
                   position: currentP!,
                 ),
               },
             ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: AppColors.red,
+        foregroundColor: AppColors.white,
+        onPressed: goToMe,
+        label: const Text('ตำแหน่งของฉัน'),
+        icon: const Icon(Icons.near_me),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
