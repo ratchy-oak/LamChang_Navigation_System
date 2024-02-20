@@ -18,10 +18,17 @@ class _UserPageState extends State<UserPage> {
   late String username;
   late String type;
   late String titleName;
-  static const LatLng lamChangCity = LatLng(18.793585, 98.991854);
+  static const LatLng lamChangCity =
+      LatLng(18.79399727691207, 98.9912201458245);
   final Completer<GoogleMapController> mapController = Completer();
   Location location = Location();
   LatLng? currentP;
+  Set<Polyline> polylines = {};
+
+  // NODE LIST
+  static const LatLng node1 = LatLng(18.792803917221086, 98.99007145163777);
+  static const LatLng node2 = LatLng(18.793206885962203, 98.99002746865207);
+  // NODE LIST
 
   Future<void> getLocationUpdates() async {
     bool serviceEnabled;
@@ -75,10 +82,27 @@ class _UserPageState extends State<UserPage> {
     cameraToPosition(currentP!);
   }
 
+  drawPolylines() async {
+    // LINE LIST
+    polylines.add(const Polyline(
+      polylineId: PolylineId("42.24"),
+      visible: true,
+      width: 5, //width of polyline
+      points: [
+        node1, //start point
+        node2, //end point
+      ],
+      color: AppColors.yellow, //color of polyline
+    ));
+    // LINE LIST
+    setState(() {
+      //refresh UI
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    getLocationUpdates();
     Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
 
     username = jwtDecodedToken['username'];
@@ -89,6 +113,9 @@ class _UserPageState extends State<UserPage> {
       type = "เจ้าหน้าที่ ";
     }
     titleName = type + username;
+
+    getLocationUpdates();
+    drawPolylines();
   }
 
   @override
@@ -118,13 +145,14 @@ class _UserPageState extends State<UserPage> {
                 target: lamChangCity,
                 zoom: 17,
               ),
-              markers: {
-                const Marker(
-                  markerId: MarkerId("lamChangCity"),
-                  icon: BitmapDescriptor.defaultMarker,
-                  position: lamChangCity,
-                ),
-              },
+              // markers: {
+              //   const Marker(
+              //     markerId: MarkerId("lamChangCity"),
+              //     icon: BitmapDescriptor.defaultMarker,
+              //     position: lamChangCity,
+              //   ),
+              // },
+              polylines: polylines,
             ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: AppColors.red,
