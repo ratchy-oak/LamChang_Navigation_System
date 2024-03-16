@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:dijkstra/dijkstra.dart';
 
 class UserPage extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
@@ -82,6 +83,23 @@ class _UserPageState extends State<UserPage> {
     cameraToPosition(currentP!);
   }
 
+  Future<void> findShortestPath() async {
+    Map graph = {
+      1: {2: 4224, 3: 10400},
+      2: {1: 4224, 4: 10613, 5: 1153},
+      3: {1: 10400, 4: 1372},
+      4: {2: 10613, 3: 1372, 6: 3793},
+      5: {2: 1153, 6: 11177},
+      6: {4: 3793, 5: 11177}
+    };
+
+    int from = 5;
+    int to = 1;
+    var output = Dijkstra.findPathFromGraph(graph, from, to);
+    // ignore: avoid_print
+    print(output);
+  }
+
   drawPolylines() async {
     // LINE LIST
     polylines.add(const Polyline(
@@ -115,6 +133,7 @@ class _UserPageState extends State<UserPage> {
     titleName = type + username;
 
     getLocationUpdates();
+    findShortestPath();
     drawPolylines();
   }
 
