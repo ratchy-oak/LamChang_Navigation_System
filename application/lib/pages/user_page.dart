@@ -25,10 +25,13 @@ class _UserPageState extends State<UserPage> {
   Location location = Location();
   LatLng? currentP;
   Set<Polyline> polylines = {};
+  var output = [];
 
   // NODE LIST
-  static const LatLng node1 = LatLng(18.792803917221086, 98.99007145163777);
-  static const LatLng node2 = LatLng(18.793206885962203, 98.99002746865207);
+  final node = [
+    const LatLng(18.792803917221086, 98.99007145163777),
+    const LatLng(18.793206885962203, 98.99002746865207),
+  ];
   // NODE LIST
 
   Future<void> getLocationUpdates() async {
@@ -83,7 +86,7 @@ class _UserPageState extends State<UserPage> {
     cameraToPosition(currentP!);
   }
 
-  Future<void> findShortestPath() async {
+  Future findShortestPath() async {
     Map graph = {
       1: {2: 4224, 3: 10400},
       2: {1: 4224, 4: 10613, 5: 1153},
@@ -93,29 +96,28 @@ class _UserPageState extends State<UserPage> {
       6: {4: 3793, 5: 11177}
     };
 
-    int from = 5;
-    int to = 1;
-    var output = Dijkstra.findPathFromGraph(graph, from, to);
+    int from = 1;
+    int to = 2;
+    output = Dijkstra.findPathFromGraph(graph, from, to);
     // ignore: avoid_print
     print(output);
   }
 
   drawPolylines() async {
-    // LINE LIST
-    polylines.add(const Polyline(
-      polylineId: PolylineId("42.24"),
-      visible: true,
-      width: 5, //width of polyline
-      points: [
-        node1, //start point
-        node2, //end point
-      ],
-      color: AppColors.yellow, //color of polyline
-    ));
-    // LINE LIST
-    setState(() {
-      //refresh UI
-    });
+    for (int i = 0; i < output.length; i++) {
+      if (i < (output.length - 1)) {
+        polylines.add(Polyline(
+          polylineId: const PolylineId(""),
+          visible: true,
+          width: 5, //width of polyline
+          points: [
+            node[output[i] - 1], //start point
+            node[output[i + 1] - 1], //end point
+          ],
+          color: AppColors.yellow, //color of polyline
+        ));
+      }
+    }
   }
 
   @override
