@@ -118,7 +118,7 @@ class _UserPageState extends State<UserPage> {
         ));
       }
     }
-  }
+  } 
 
   @override
   void initState() {
