@@ -129,7 +129,7 @@ class _UserPageState extends State<UserPage> {
       ),
       body: currentP == null
           ? const Center(
-              child: Text("Loading.."),
+              child: Text("Loading..."),
             )
           : GoogleMap(
               myLocationEnabled: true,
@@ -143,6 +143,14 @@ class _UserPageState extends State<UserPage> {
                 zoom: 17.5,
               ),
               polylines: polylines,
+              markers: {
+                if (to > 0)
+                  Marker(
+                    markerId: const MarkerId("Destination"),
+                    icon: BitmapDescriptor.defaultMarker,
+                    position: node[to - 1],
+                  ),
+              },
             ),
       bottomNavigationBar: BottomAppBar(
         height: 100,
@@ -165,8 +173,8 @@ class _UserPageState extends State<UserPage> {
               onPressed: () {
                 goToLamChangCity();
                 setState(() {
-                  from = 1;
-                  to = 142;
+                  from = 6;
+                  to = 58;
                   findShortestPath();
                   drawPolylines();
                 });
