@@ -16,6 +16,40 @@ class UserPage extends StatefulWidget {
   State<UserPage> createState() => _UserPageState();
 }
 
+class BuildImage extends StatelessWidget {
+  final int index;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final String imagePath;
+
+  const BuildImage({
+    super.key,
+    required this.index,
+    required this.isSelected,
+    required this.onTap,
+    required this.imagePath,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ColorFiltered(
+          colorFilter: isSelected
+              ? const ColorFilter.mode(
+                  AppColors.transparent, BlendMode.multiply)
+              : const ColorFilter.mode(AppColors.grey, BlendMode.saturation),
+          child: Image.asset(
+            imagePath,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _UserPageState extends State<UserPage> {
   late String username;
   late String type;
@@ -75,32 +109,6 @@ class _UserPageState extends State<UserPage> {
 
   Future goToMe() async {
     cameraToPosition(currentP!);
-  }
-
-  void selectIndex(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
-
-  Widget buildImage(int index) {
-    return GestureDetector(
-      onTap: () {
-        selectIndex(index);
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ColorFiltered(
-          colorFilter: selectedIndex == index
-              ? const ColorFilter.mode(
-                  AppColors.transparent, BlendMode.multiply)
-              : const ColorFilter.mode(AppColors.grey, BlendMode.saturation),
-          child: Image.asset(
-            'assets/images/car.png',
-          ),
-        ),
-      ),
-    );
   }
 
   @override
@@ -197,9 +205,46 @@ class _UserPageState extends State<UserPage> {
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
-                            buildImage(0),
-                            buildImage(1),
-                            buildImage(2),
+                            BuildImage(
+                              index: 0,
+                              isSelected: selectedIndex == 0,
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = 0;
+                                });
+                              },
+                              imagePath: 'assets/images/fire.jpg',
+                            ),
+                            BuildImage(
+                              index: 1,
+                              isSelected: selectedIndex == 1,
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = 1;
+                                });
+                              },
+                              imagePath: 'assets/images/ambulance.webp',
+                            ),
+                            BuildImage(
+                              index: 2,
+                              isSelected: selectedIndex == 2,
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = 2;
+                                });
+                              },
+                              imagePath: 'assets/images/motorbike.png',
+                            ),
+                            BuildImage(
+                              index: 3,
+                              isSelected: selectedIndex == 3,
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = 3;
+                                });
+                              },
+                              imagePath: 'assets/images/police.png',
+                            ),
                           ],
                         ),
                       ),
