@@ -152,7 +152,7 @@ class _UserPageState extends State<UserPage> {
           children: <Widget>[
             RawMaterialButton(
               onPressed: () {
-                goToMe;
+                goToMe();
               },
               fillColor: AppColors.red,
               padding: const EdgeInsets.all(15),
@@ -161,8 +161,9 @@ class _UserPageState extends State<UserPage> {
                 Icons.near_me,
               ),
             ),
-            GestureDetector(
-              onTap: () {
+            TextButton(
+              onPressed: () {
+                goToLamChangCity();
                 setState(() {
                   from = 1;
                   to = 142;
@@ -170,17 +171,21 @@ class _UserPageState extends State<UserPage> {
                   drawPolylines();
                 });
               },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 95),
-                decoration: BoxDecoration(
-                  color: AppColors.green,
-                  borderRadius: BorderRadius.circular(30),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(AppColors.green),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
                 ),
-                child: const Text(
-                  'หาเส้นทาง',
-                  style: AppText.button,
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 95),
                 ),
+              ),
+              child: const Text(
+                'หาเส้นทาง',
+                style: AppText.button,
               ),
             ),
           ],
