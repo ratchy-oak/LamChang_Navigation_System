@@ -2,13 +2,9 @@ import 'package:application/styles/app_colors.dart';
 import 'package:dijkstra/dijkstra.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-var output = [];
-
-Set<Polyline> polylines = {};
-
-final node = [
+List<LatLng> node = [
   const LatLng(18.795245857106156, 98.99009726127217), // 1
-  const LatLng(18.795247526772357, 98.99018015585891), // 2
+  const LatLng(18.795242387570667, 98.99018241940603), // 2
   const LatLng(18.79524293909769, 98.99025170284756), // 3
   const LatLng(18.795239744343995, 98.99033382070922), // 4
   const LatLng(18.795236549590225, 98.99045980975728), // 5
@@ -16,13 +12,13 @@ final node = [
   const LatLng(18.795223846395654, 98.99077862257336), // 7
   const LatLng(18.795218180662566, 98.99088012827998), // 8
   const LatLng(18.79521419341057, 98.99106058235776), // 9
-  const LatLng(18.795206917653218, 98.99114841758295), // 10
+  const LatLng(18.795210256694226, 98.99114089347049), // 10
   const LatLng(18.795207672695195, 98.99121915551834), // 11
   const LatLng(18.79520338692916, 98.99130817243757), // 12
   const LatLng(18.7952016686964, 98.99140695144028), // 13
-  const LatLng(18.795192395165444, 98.99149791322503), // 14
+  const LatLng(18.795201948404276, 98.991494995873), // 14
   const LatLng(18.795193719955602, 98.99168123620659), // 15
-  const LatLng(18.795183121633926, 98.99181278093873), // 16
+  const LatLng(18.795186804569216, 98.99182067076694), // 16
   const LatLng(18.795179147263276, 98.99203108921516), // 17
   const LatLng(18.795170162023233, 98.99222594158269), // 18
   const LatLng(18.795164392502393, 98.99248984425635), // 19
@@ -158,7 +154,11 @@ final node = [
   const LatLng(18.79398540966922, 98.99219395993062), // 149
 ];
 
-Future findShortestPath() async {
+var output = [];
+
+Set<Polyline> polylines = {};
+
+findShortestPath() async {
   Map graph = {
     1: {2: 785, 101: 3889},
     2: {1: 785, 3: 608},
@@ -310,8 +310,8 @@ Future findShortestPath() async {
     148: {146: 1150, 149: 1860},
     149: {148: 1860, 33: 1068}
   };
-  int from = 118;
-  int to = 63;
+  int from = 13;
+  int to = 113;
   output = Dijkstra.findPathFromGraph(graph, from, to);
   // ignore: avoid_print
   print(output);

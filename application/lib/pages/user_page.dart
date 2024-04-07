@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:application/config/map.dart';
 import 'package:application/styles/app_colors.dart';
+import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -51,8 +52,6 @@ class _UserPageState extends State<UserPage> {
         setState(() {
           currentP =
               LatLng(currentLocation.latitude!, currentLocation.longitude!);
-          // ignore: avoid_print
-          print(currentP!);
         });
       }
     });
@@ -99,14 +98,35 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: AppColors.green,
-        title: Text(titleName),
+        backgroundColor: AppColors.transparent,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.only(left: 15),
+          child: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppColors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.maps_home_work_rounded),
-            onPressed: goToLamChangCity,
-          )
+          Container(
+            margin: const EdgeInsets.only(right: 20),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.white,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.maps_home_work_rounded),
+              color: AppColors.green,
+              onPressed: goToLamChangCity,
+            ),
+          ),
         ],
       ),
       body: currentP == null
@@ -126,14 +146,41 @@ class _UserPageState extends State<UserPage> {
               ),
               polylines: polylines,
             ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: AppColors.red,
-        foregroundColor: AppColors.white,
-        onPressed: goToMe,
-        label: const Text('ตำแหน่งของฉัน'),
-        icon: const Icon(Icons.near_me),
+      bottomNavigationBar: BottomAppBar(
+        height: 100,
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RawMaterialButton(
+              onPressed: () {
+                goToMe;
+              },
+              fillColor: AppColors.red,
+              padding: const EdgeInsets.all(15),
+              shape: const CircleBorder(),
+              child: const Icon(
+                Icons.near_me,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 95),
+                decoration: BoxDecoration(
+                  color: AppColors.green,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: const Text(
+                  'หาเส้นทาง',
+                  style: AppText.button,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

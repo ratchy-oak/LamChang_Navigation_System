@@ -102,12 +102,14 @@ class _LoginPageState extends State<LoginPage> {
         if (decodedToken['type'] == "user") {
           // ignore: use_build_context_synchronously
           Navigator.push(
+              // ignore: use_build_context_synchronously
               context,
               MaterialPageRoute(
                   builder: (context) => UserPage(token: myToken)));
         } else {
           // ignore: use_build_context_synchronously
           Navigator.push(
+              // ignore: use_build_context_synchronously
               context,
               MaterialPageRoute(
                   builder: (context) => HelperPage(token: myToken)));
