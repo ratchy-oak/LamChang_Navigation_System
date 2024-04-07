@@ -91,8 +91,6 @@ class _UserPageState extends State<UserPage> {
     titleName = type + username;
 
     getLocationUpdates();
-    findShortestPath();
-    drawPolylines();
   }
 
   @override
@@ -164,7 +162,14 @@ class _UserPageState extends State<UserPage> {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                setState(() {
+                  from = 1;
+                  to = 142;
+                  findShortestPath();
+                  drawPolylines();
+                });
+              },
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(vertical: 15, horizontal: 95),

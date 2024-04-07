@@ -2,6 +2,11 @@ import 'package:application/styles/app_colors.dart';
 import 'package:dijkstra/dijkstra.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+int from = 0;
+int to = 0;
+var output = [];
+Set<Polyline> polylines = {};
+
 List<LatLng> node = [
   const LatLng(18.795245857106156, 98.99009726127217), // 1
   const LatLng(18.795242387570667, 98.99018241940603), // 2
@@ -153,10 +158,6 @@ List<LatLng> node = [
   const LatLng(18.793983073586954, 98.99201408437918), // 148
   const LatLng(18.79398540966922, 98.99219395993062), // 149
 ];
-
-var output = [];
-
-Set<Polyline> polylines = {};
 
 findShortestPath() async {
   Map graph = {
@@ -310,17 +311,16 @@ findShortestPath() async {
     148: {146: 1150, 149: 1860},
     149: {148: 1860, 33: 1068}
   };
-  int from = 13;
-  int to = 113;
   output = Dijkstra.findPathFromGraph(graph, from, to);
   // ignore: avoid_print
   print(output);
 }
 
 drawPolylines() async {
+  List<Polyline> allPolylines = [];
   for (int i = 0; i < output.length - 1; i++) {
-    polylines.add(Polyline(
-      polylineId: const PolylineId("Shortest Path"),
+    allPolylines.add(Polyline(
+      polylineId: PolylineId("Shortest Path $i"),
       visible: true,
       width: 5, //width of polyline
       points: [
@@ -330,4 +330,5 @@ drawPolylines() async {
       color: AppColors.yellow, //color of polyline
     ));
   }
+  polylines.addAll(allPolylines);
 }
