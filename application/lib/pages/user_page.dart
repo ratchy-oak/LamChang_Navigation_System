@@ -25,6 +25,7 @@ class _UserPageState extends State<UserPage> {
   final Completer<GoogleMapController> mapController = Completer();
   Location location = Location();
   LatLng? currentP;
+  int selectedIndex = -1;
 
   Future<void> getLocationUpdates() async {
     bool serviceEnabled;
@@ -74,6 +75,32 @@ class _UserPageState extends State<UserPage> {
 
   Future goToMe() async {
     cameraToPosition(currentP!);
+  }
+
+  void selectIndex(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
+  Widget buildImage(int index) {
+    return GestureDetector(
+      onTap: () {
+        selectIndex(index);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ColorFiltered(
+          colorFilter: selectedIndex == index
+              ? const ColorFilter.mode(
+                  AppColors.transparent, BlendMode.multiply)
+              : const ColorFilter.mode(AppColors.grey, BlendMode.saturation),
+          child: Image.asset(
+            'assets/images/car.png',
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -153,48 +180,81 @@ class _UserPageState extends State<UserPage> {
               },
             ),
       bottomNavigationBar: BottomAppBar(
-        height: 100,
+        height: 205,
         color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            RawMaterialButton(
-              onPressed: () {
-                goToMe();
-              },
-              fillColor: AppColors.red,
-              padding: const EdgeInsets.all(15),
-              shape: const CircleBorder(),
-              child: const Icon(
-                Icons.near_me,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 25),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            buildImage(0),
+                            buildImage(1),
+                            buildImage(2),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Divider(
+                    height: 1,
+                    color: AppColors.grey,
+                    thickness: 1,
+                  ),
+                ],
               ),
             ),
-            TextButton(
-              onPressed: () {
-                goToLamChangCity();
-                setState(() {
-                  from = 6;
-                  to = 58;
-                  findShortestPath();
-                  drawPolylines();
-                });
-              },
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(AppColors.green),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                RawMaterialButton(
+                  onPressed: () {
+                    goToMe();
+                  },
+                  fillColor: AppColors.red,
+                  padding: const EdgeInsets.all(15),
+                  shape: const CircleBorder(),
+                  child: const Icon(
+                    Icons.near_me,
                   ),
                 ),
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  const EdgeInsets.symmetric(vertical: 15, horizontal: 95),
+                TextButton(
+                  onPressed: () {
+                    goToLamChangCity();
+                    setState(() {
+                      from = 6;
+                      to = 58;
+                      findShortestPath();
+                      drawPolylines();
+                    });
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(AppColors.green),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 95),
+                    ),
+                  ),
+                  child: const Text(
+                    'หาเส้นทาง',
+                    style: AppText.button,
+                  ),
                 ),
-              ),
-              child: const Text(
-                'หาเส้นทาง',
-                style: AppText.button,
-              ),
+              ],
             ),
           ],
         ),
