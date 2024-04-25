@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:application/config/config.dart';
 import 'package:application/config/map.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -60,6 +62,7 @@ class _UserPageState extends State<UserPage> {
   Location location = Location();
   LatLng? currentP;
   int selectedIndex = -1;
+  List<LatLng> outSideNode = [];
 
   Future<void> getLocationUpdates() async {
     bool serviceEnabled;
@@ -109,6 +112,28 @@ class _UserPageState extends State<UserPage> {
 
   Future goToMe() async {
     cameraToPosition(currentP!);
+  }
+
+  Future<List<LatLng>> findNormalPath() async {
+    PolylinePoints polylinePoints = PolylinePoints();
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleApiKey,
+      PointLatLng(currentP!.latitude, currentP!.longitude),
+      PointLatLng(inSideNode[output[0] - 1].latitude,
+          inSideNode[output[0] - 1].longitude),
+      travelMode: TravelMode.driving,
+    );
+
+    if (result.points.isNotEmpty) {
+      // ignore: avoid_function_literals_in_foreach_calls
+      result.points.forEach((PointLatLng point) {
+        outSideNode.add(LatLng(point.latitude, point.longitude));
+      });
+    } else {
+      // ignore: avoid_print
+      print(result.errorMessage);
+    }
+    return outSideNode;
   }
 
   @override
@@ -177,13 +202,13 @@ class _UserPageState extends State<UserPage> {
                 target: lamChangCity,
                 zoom: 17.5,
               ),
-              polylines: polylines,
+              polylines: inSidePolylines,
               markers: {
                 if (to > 0)
                   Marker(
                     markerId: const MarkerId("Destination"),
                     icon: BitmapDescriptor.defaultMarker,
-                    position: node[to - 1],
+                    position: inSideNode[to - 1],
                   ),
               },
             ),
@@ -211,6 +236,8 @@ class _UserPageState extends State<UserPage> {
                               onTap: () {
                                 setState(() {
                                   selectedIndex = 0;
+                                  // ignore: avoid_print
+                                  print("Fire Fighting Vehicle");
                                 });
                               },
                               imagePath: 'assets/images/fire.jpg',
@@ -221,6 +248,8 @@ class _UserPageState extends State<UserPage> {
                               onTap: () {
                                 setState(() {
                                   selectedIndex = 1;
+                                  // ignore: avoid_print
+                                  print("Ambulance Vehicle");
                                 });
                               },
                               imagePath: 'assets/images/ambulance.webp',
@@ -231,6 +260,8 @@ class _UserPageState extends State<UserPage> {
                               onTap: () {
                                 setState(() {
                                   selectedIndex = 2;
+                                  // ignore: avoid_print
+                                  print("Police Motorbike");
                                 });
                               },
                               imagePath: 'assets/images/motorbike.png',
@@ -241,6 +272,8 @@ class _UserPageState extends State<UserPage> {
                               onTap: () {
                                 setState(() {
                                   selectedIndex = 3;
+                                  // ignore: avoid_print
+                                  print("Police Car");
                                 });
                               },
                               imagePath: 'assets/images/police.png',
@@ -278,6 +311,7 @@ class _UserPageState extends State<UserPage> {
                     setState(() {
                       from = 6;
                       to = 58;
+                      findNormalPath();
                       findShortestPath();
                       drawPolylines();
                     });

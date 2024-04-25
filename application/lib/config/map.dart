@@ -5,9 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 int from = 0;
 int to = 0;
 var output = [];
-Set<Polyline> polylines = {};
+Set<Polyline> inSidePolylines = {};
 
-List<LatLng> node = [
+List<LatLng> inSideNode = [
   const LatLng(18.795245857106156, 98.99009726127217), // 1
   const LatLng(18.795242387570667, 98.99018241940603), // 2
   const LatLng(18.79524293909769, 98.99025170284756), // 3
@@ -322,13 +322,13 @@ drawPolylines() async {
     allPolylines.add(Polyline(
       polylineId: PolylineId("Shortest Path $i"),
       visible: true,
-      width: 5, //width of polyline
+      width: 7, //width of polyline
       points: [
-        node[output[i] - 1], //start point
-        node[output[i + 1] - 1], //end point
+        inSideNode[output[i] - 1], //start point
+        inSideNode[output[i + 1] - 1], //end point
       ],
       color: AppColors.yellow, //color of polyline
     ));
   }
-  polylines.addAll(allPolylines);
+  inSidePolylines.addAll(allPolylines);
 }
