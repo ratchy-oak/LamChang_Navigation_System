@@ -26,7 +26,7 @@ class AppText {
     fontSize: 12,
   );
   static const warning = TextStyle(
-    color: AppColors.red,
+    color: AppColors.grey,
     fontSize: 14,
   );
 }

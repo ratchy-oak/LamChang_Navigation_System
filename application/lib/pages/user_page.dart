@@ -58,8 +58,8 @@ class _UserPageState extends State<UserPage> {
       LatLng(18.79399727691207, 98.9912201458245);
   final Completer<GoogleMapController> mapController = Completer();
   Location location = Location();
-  int selectedIndex = -1;
   LatLng? currentP;
+  bool showFloatingBlock = true;
 
   Future<void> getLocationUpdates() async {
     bool serviceEnabled;
@@ -162,34 +162,65 @@ class _UserPageState extends State<UserPage> {
           ),
         ],
       ),
-      body: currentP == null
-          ? const Center(
-              child: Text("Loading..."),
-            )
-          : GoogleMap(
-              myLocationEnabled: true,
-              myLocationButtonEnabled: false,
-              onMapCreated: (GoogleMapController controller) {
-                mapController.complete(controller);
-              },
-              mapType: MapType.hybrid,
-              initialCameraPosition: const CameraPosition(
-                target: lamChangCity,
-                zoom: 17.5,
-              ),
-              polylines: inSidePolylines,
-              markers: {
-                if (to > 0)
-                  Marker(
-                    markerId: const MarkerId("Destination"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: inSideNode[to - 1],
+      body: Stack(
+        children: [
+          currentP == null
+              ? const Center(
+                  child: Text("Loading..."),
+                )
+              : GoogleMap(
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
+                  onMapCreated: (GoogleMapController controller) {
+                    mapController.complete(controller);
+                  },
+                  mapType: MapType.hybrid,
+                  initialCameraPosition: const CameraPosition(
+                    target: lamChangCity,
+                    zoom: 17.5,
                   ),
-              },
+                  polylines: inSidePolylines,
+                  markers: {
+                    if (to > 0)
+                      Marker(
+                        markerId: const MarkerId("Destination"),
+                        icon: BitmapDescriptor.defaultMarker,
+                        position: inSideNode[to - 1],
+                      ),
+                  },
+                ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Visibility(
+              visible: showFloatingBlock,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: const Column(
+                  children: [
+                    // Content of the floating block
+                    Text(
+                      'กรุณาเลือกพาหนะ',
+                      style: AppText.warning,
+                    ),
+                  ],
+                ),
+              ),
             ),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomAppBar(
-        height: 205,
-        color: Colors.white,
+        height: 215,
+        color: AppColors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -213,9 +244,10 @@ class _UserPageState extends State<UserPage> {
                                   selectedIndex = 0;
                                   // ignore: avoid_print
                                   print("Fire Fighting Vehicle");
+                                  showFloatingBlock = false;
                                 });
                               },
-                              imagePath: 'assets/images/fire.jpg',
+                              imagePath: 'assets/images/fire.png',
                             ),
                             BuildImage(
                               index: 1,
@@ -225,9 +257,10 @@ class _UserPageState extends State<UserPage> {
                                   selectedIndex = 1;
                                   // ignore: avoid_print
                                   print("Ambulance Vehicle");
+                                  showFloatingBlock = false;
                                 });
                               },
-                              imagePath: 'assets/images/ambulance.webp',
+                              imagePath: 'assets/images/ambulance.png',
                             ),
                             BuildImage(
                               index: 2,
@@ -236,10 +269,11 @@ class _UserPageState extends State<UserPage> {
                                 setState(() {
                                   selectedIndex = 2;
                                   // ignore: avoid_print
-                                  print("Police Motorbike");
+                                  print("Police Car");
+                                  showFloatingBlock = false;
                                 });
                               },
-                              imagePath: 'assets/images/motorbike.png',
+                              imagePath: 'assets/images/police.png',
                             ),
                             BuildImage(
                               index: 3,
@@ -248,15 +282,19 @@ class _UserPageState extends State<UserPage> {
                                 setState(() {
                                   selectedIndex = 3;
                                   // ignore: avoid_print
-                                  print("Police Car");
+                                  print("Police Motorbike");
+                                  showFloatingBlock = false;
                                 });
                               },
-                              imagePath: 'assets/images/police.png',
+                              imagePath: 'assets/images/motorbike.png',
                             ),
                           ],
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   const Divider(
                     height: 1,
@@ -282,23 +320,11 @@ class _UserPageState extends State<UserPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    if (selectedIndex == -1) {
-                      // Show a warning message to select an image first
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Center(
-                            child: Text(
-                              'กรุณาเลือกพาหนะ',
-                              style: AppText.warning,
-                            ),
-                          ),
-                        ),
-                      );
-                    } else {
-                      // Execute the action
+                    if (selectedIndex != -1) {
                       goToLamChangCity();
                       setState(() {
-                        from = 6;
+                        inSidePolylines.clear();
+                        from = 13;
                         to = 58;
                         findShortestPath();
                         drawPolylines();
