@@ -203,9 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                                       controller: usernameController,
                                       decoration: InputDecoration(
                                         hintText: "ชื่อผู้ใช้",
-                                        hintStyle: const TextStyle(
-                                          color: AppColors.grey,
-                                        ),
+                                        hintStyle: AppText.body,
                                         border: InputBorder.none,
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
@@ -238,9 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                                       autocorrect: false,
                                       decoration: InputDecoration(
                                         hintText: "รหัสผ่าน",
-                                        hintStyle: const TextStyle(
-                                          color: AppColors.grey,
-                                        ),
+                                        hintStyle: AppText.body,
                                         border: InputBorder.none,
                                         suffixIcon: togglePassword(),
                                         errorStyle: const TextStyle(

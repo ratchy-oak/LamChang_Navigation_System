@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'package:application/config/config.dart';
 import 'package:application/config/map.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -113,28 +111,6 @@ class _UserPageState extends State<UserPage> {
     cameraToPosition(currentP!);
   }
 
-  List<LatLng> outSideNode = [];
-  Map<PolylineId, Polyline> outSidePolylines = {};
-  void findNormalPath() async {
-    PolylinePoints polylinePoints = PolylinePoints();
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      googleApiKey,
-      PointLatLng(currentP!.latitude, currentP!.longitude),
-      PointLatLng(inSideNode[output[0] - 1].latitude,
-          inSideNode[output[0] - 1].longitude),
-    );
-
-    if (result.points.isNotEmpty) {
-      // ignore: avoid_function_literals_in_foreach_calls
-      result.points.forEach(
-        (PointLatLng point) => outSideNode.add(
-          LatLng(point.latitude, point.longitude),
-        ),
-      );
-      setState(() {});
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -201,20 +177,7 @@ class _UserPageState extends State<UserPage> {
                 target: lamChangCity,
                 zoom: 17.5,
               ),
-              polylines: {
-                Polyline(
-                  polylineId: const PolylineId("Normal Path"),
-                  points: outSideNode,
-                  color: AppColors.yellow,
-                  width: 7,
-                ),
-                Polyline(
-                  polylineId: const PolylineId("Shortest Path"),
-                  points: inSideNode,
-                  color: AppColors.yellow,
-                  width: 7,
-                ),
-              },
+              polylines: inSidePolylines,
               markers: {
                 if (to > 0)
                   Marker(
@@ -319,13 +282,28 @@ class _UserPageState extends State<UserPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    goToLamChangCity();
-                    setState(() {
-                      from = 6;
-                      to = 58;
-                      findShortestPath();
-                      findNormalPath();
-                    });
+                    if (selectedIndex == -1) {
+                      // Show a warning message to select an image first
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Center(
+                            child: Text(
+                              'กรุณาเลือกพาหนะ',
+                              style: AppText.warning,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      // Execute the action
+                      goToLamChangCity();
+                      setState(() {
+                        from = 6;
+                        to = 58;
+                        findShortestPath();
+                        drawPolylines();
+                      });
+                    }
                   },
                   style: ButtonStyle(
                     backgroundColor:

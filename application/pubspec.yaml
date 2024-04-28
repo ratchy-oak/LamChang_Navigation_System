@@ -30,7 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_polyline_points:
   google_maps_flutter:
   shared_preferences:
   jwt_decoder:

@@ -245,9 +245,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       controller: usernameController,
                                       decoration: InputDecoration(
                                         hintText: "ชื่อผู้ใช้",
-                                        hintStyle: const TextStyle(
-                                          color: AppColors.grey,
-                                        ),
+                                        hintStyle: AppText.body,
                                         border: InputBorder.none,
                                         errorStyle: const TextStyle(
                                             color: AppColors.red),
@@ -280,9 +278,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       autocorrect: false,
                                       decoration: InputDecoration(
                                         hintText: "รหัสผ่าน",
-                                        hintStyle: const TextStyle(
-                                          color: AppColors.grey,
-                                        ),
+                                        hintStyle: AppText.body,
                                         border: InputBorder.none,
                                         suffixIcon: togglePassword(),
                                         errorStyle: const TextStyle(
@@ -316,9 +312,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       autocorrect: false,
                                       decoration: InputDecoration(
                                         hintText: "ยืนยันรหัสผ่าน",
-                                        hintStyle: const TextStyle(
-                                          color: AppColors.grey,
-                                        ),
+                                        hintStyle: AppText.body,
                                         border: InputBorder.none,
                                         suffixIcon: togglePassword(),
                                         errorStyle: const TextStyle(
