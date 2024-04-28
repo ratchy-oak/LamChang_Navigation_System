@@ -60,9 +60,8 @@ class _UserPageState extends State<UserPage> {
       LatLng(18.79399727691207, 98.9912201458245);
   final Completer<GoogleMapController> mapController = Completer();
   Location location = Location();
-  LatLng? currentP;
   int selectedIndex = -1;
-  List<LatLng> outSideNode = [];
+  LatLng? currentP;
 
   Future<void> getLocationUpdates() async {
     bool serviceEnabled;
@@ -114,26 +113,26 @@ class _UserPageState extends State<UserPage> {
     cameraToPosition(currentP!);
   }
 
-  Future<List<LatLng>> findNormalPath() async {
+  List<LatLng> outSideNode = [];
+  Map<PolylineId, Polyline> outSidePolylines = {};
+  void findNormalPath() async {
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       googleApiKey,
       PointLatLng(currentP!.latitude, currentP!.longitude),
       PointLatLng(inSideNode[output[0] - 1].latitude,
           inSideNode[output[0] - 1].longitude),
-      travelMode: TravelMode.driving,
     );
 
     if (result.points.isNotEmpty) {
       // ignore: avoid_function_literals_in_foreach_calls
-      result.points.forEach((PointLatLng point) {
-        outSideNode.add(LatLng(point.latitude, point.longitude));
-      });
-    } else {
-      // ignore: avoid_print
-      print(result.errorMessage);
+      result.points.forEach(
+        (PointLatLng point) => outSideNode.add(
+          LatLng(point.latitude, point.longitude),
+        ),
+      );
+      setState(() {});
     }
-    return outSideNode;
   }
 
   @override
@@ -202,7 +201,20 @@ class _UserPageState extends State<UserPage> {
                 target: lamChangCity,
                 zoom: 17.5,
               ),
-              polylines: inSidePolylines,
+              polylines: {
+                Polyline(
+                  polylineId: const PolylineId("Normal Path"),
+                  points: outSideNode,
+                  color: AppColors.yellow,
+                  width: 7,
+                ),
+                Polyline(
+                  polylineId: const PolylineId("Shortest Path"),
+                  points: inSideNode,
+                  color: AppColors.yellow,
+                  width: 7,
+                ),
+              },
               markers: {
                 if (to > 0)
                   Marker(
@@ -311,9 +323,8 @@ class _UserPageState extends State<UserPage> {
                     setState(() {
                       from = 6;
                       to = 58;
-                      findNormalPath();
                       findShortestPath();
-                      drawPolylines();
+                      findNormalPath();
                     });
                   },
                   style: ButtonStyle(
