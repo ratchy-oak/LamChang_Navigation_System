@@ -59,7 +59,11 @@ class _UserPageState extends State<UserPage> {
   final Completer<GoogleMapController> mapController = Completer();
   Location location = Location();
   LatLng? currentP;
-  bool showFloatingBlock = true;
+  bool selectVehicle = true;
+  bool selectDestination = true;
+  late Marker destinationMarker;
+  late LatLng destinationLatLng;
+  bool showDestinationMarker = true;
 
   Future<void> getLocationUpdates() async {
     bool serviceEnabled;
@@ -125,6 +129,12 @@ class _UserPageState extends State<UserPage> {
     }
     titleName = type + username;
 
+    destinationMarker = const Marker(
+      markerId: MarkerId("Choose Destination"),
+      position: lamChangCity,
+      icon: BitmapDescriptor.defaultMarker,
+    );
+
     getLocationUpdates();
   }
 
@@ -179,25 +189,26 @@ class _UserPageState extends State<UserPage> {
                     target: lamChangCity,
                     zoom: 17.5,
                   ),
-                  polylines: inSidePolylines,
-                  markers: {
-                    if (to > 0)
-                      Marker(
-                        markerId: const MarkerId("Destination"),
-                        icon: BitmapDescriptor.defaultMarker,
-                        position: inSideNode[to - 1],
-                      ),
+                  onCameraMove: (CameraPosition cameraPosition) {
+                    setState(() {
+                      destinationLatLng = cameraPosition.target;
+                      destinationMarker = destinationMarker.copyWith(
+                        positionParam: cameraPosition.target,
+                      );
+                    });
                   },
+                  markers: showDestinationMarker ? {destinationMarker} : {},
+                  polylines: inSidePolylines,
                 ),
           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: Visibility(
-              visible: showFloatingBlock,
+              visible: selectVehicle,
               child: Container(
                 decoration: const BoxDecoration(
-                  color: AppColors.white,
+                  color: AppColors.skin,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25),
@@ -206,9 +217,31 @@ class _UserPageState extends State<UserPage> {
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: const Column(
                   children: [
-                    // Content of the floating block
                     Text(
                       'กรุณาเลือกพาหนะ',
+                      style: AppText.warning,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 61,
+            left: 100,
+            right: 100,
+            child: Visibility(
+              visible: selectDestination,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: AppColors.skin,
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                child: const Column(
+                  children: [
+                    Text(
+                      'กรุณาเลือกจุดหมาย',
                       style: AppText.warning,
                     ),
                   ],
@@ -242,9 +275,9 @@ class _UserPageState extends State<UserPage> {
                               onTap: () {
                                 setState(() {
                                   selectedIndex = 0;
+                                  selectVehicle = false;
                                   // ignore: avoid_print
                                   print("Fire Fighting Vehicle");
-                                  showFloatingBlock = false;
                                 });
                               },
                               imagePath: 'assets/images/fire.png',
@@ -255,9 +288,9 @@ class _UserPageState extends State<UserPage> {
                               onTap: () {
                                 setState(() {
                                   selectedIndex = 1;
+                                  selectVehicle = false;
                                   // ignore: avoid_print
                                   print("Ambulance Vehicle");
-                                  showFloatingBlock = false;
                                 });
                               },
                               imagePath: 'assets/images/ambulance.png',
@@ -268,9 +301,9 @@ class _UserPageState extends State<UserPage> {
                               onTap: () {
                                 setState(() {
                                   selectedIndex = 2;
+                                  selectVehicle = false;
                                   // ignore: avoid_print
                                   print("Police Car");
-                                  showFloatingBlock = false;
                                 });
                               },
                               imagePath: 'assets/images/police.png',
@@ -281,9 +314,9 @@ class _UserPageState extends State<UserPage> {
                               onTap: () {
                                 setState(() {
                                   selectedIndex = 3;
+                                  selectVehicle = false;
                                   // ignore: avoid_print
                                   print("Police Motorbike");
-                                  showFloatingBlock = false;
                                 });
                               },
                               imagePath: 'assets/images/motorbike.png',
@@ -315,37 +348,69 @@ class _UserPageState extends State<UserPage> {
                   padding: const EdgeInsets.all(15),
                   shape: const CircleBorder(),
                   child: const Icon(
-                    Icons.near_me,
+                    Icons.location_searching_rounded,
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    if (selectedIndex != -1) {
-                      goToLamChangCity();
+                Visibility(
+                  visible: selectDestination,
+                  child: TextButton(
+                    onPressed: () {
                       setState(() {
-                        inSidePolylines.clear();
-                        from = 13;
-                        to = 58;
-                        findShortestPath();
-                        drawPolylines();
+                        selectDestination = false;
+                        showDestinationMarker = false;
                       });
-                    }
-                  },
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(AppColors.green),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(AppColors.yellow),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 80),
                       ),
                     ),
-                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 95),
+                    child: const Text(
+                      'ยืนยันจุดหมาย',
+                      style: AppText.button,
                     ),
                   ),
-                  child: const Text(
-                    'หาเส้นทาง',
-                    style: AppText.button,
+                ),
+                Visibility(
+                  visible: !selectDestination,
+                  child: TextButton(
+                    onPressed: () {
+                      if (!selectVehicle) {
+                        goToLamChangCity();
+                        setState(() {
+                          inSidePolylines.clear();
+                          from = 13;
+                          to = 58;
+                          findShortestPath();
+                          drawPolylines();
+                        });
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(AppColors.green),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 95),
+                      ),
+                    ),
+                    child: const Text(
+                      'หาเส้นทาง',
+                      style: AppText.button,
+                    ),
                   ),
                 ),
               ],
