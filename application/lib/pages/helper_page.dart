@@ -218,7 +218,7 @@ class _HelperPageState extends State<HelperPage> {
                     topRight: Radius.circular(25),
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 17),
                 child: const Column(
                   children: [
                     Text(
