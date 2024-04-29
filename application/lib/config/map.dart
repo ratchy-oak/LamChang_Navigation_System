@@ -183,7 +183,22 @@ List<LatLng> inSideNode = [
   const LatLng(18.79398540966922, 98.99219395993062), // 149
 ];
 
-findClosestNode(destinationLatLng) async {
+findClosestStartNode(currentLatLng) async {
+  double minDistance = double.infinity;
+
+  for (int i = 0; i < inSideNode.length; i++) {
+    double distance = calculateDistance(currentLatLng, inSideNode[i]);
+    if (distance < minDistance) {
+      minDistance = distance;
+      from = i + 1; // Adding 1 to convert from 0-based index to 1-based index
+    }
+  }
+
+  // ignore: avoid_print
+  print("The closest node to your location is: Node $from");
+}
+
+findClosestEndNode(destinationLatLng) async {
   double minDistance = double.infinity;
 
   for (int i = 0; i < inSideNode.length; i++) {
@@ -353,15 +368,15 @@ findShortestPath() async {
   };
   if (selectedIndex == 0) {
     // ignore: avoid_print
-    print("Your car is: > 300 cm");
+    print("Your vehicle width: > 300 cm");
     output = Dijkstra.findPathFromGraph(graph, from, to);
   } else if (selectedIndex == 1 || selectedIndex == 2) {
     // ignore: avoid_print
-    print("Your car is: > 200 cm");
+    print("Your vehicle width: > 200 cm");
     output = Dijkstra.findPathFromGraph(graph, from, to);
   } else if (selectedIndex == 3) {
     // ignore: avoid_print
-    print("Your car is: > 100 cm");
+    print("Your vehicle width: > 100 cm");
     output = Dijkstra.findPathFromGraph(graph, from, to);
   }
   // ignore: avoid_print

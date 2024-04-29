@@ -363,7 +363,8 @@ class _HelperPageState extends State<HelperPage> {
                       setState(() {
                         selectDestination = false;
                         showCenterMarker = false;
-                        findClosestNode(destinationLatLng);
+                        findClosestStartNode(currentP);
+                        findClosestEndNode(destinationLatLng);
                         destinationMarker = Marker(
                           markerId: const MarkerId("Your Destination"),
                           position: inSideNode[to - 1],
@@ -398,7 +399,6 @@ class _HelperPageState extends State<HelperPage> {
                         goToLamChangCity();
                         setState(() {
                           inSidePolylines.clear();
-                          from = 1;
                           findShortestPath();
                           drawPolylines();
                         });
