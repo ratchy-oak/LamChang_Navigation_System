@@ -63,8 +63,8 @@ class _HelperPageState extends State<HelperPage> {
   bool selectDestination = true;
   bool showCenterMarker = true;
   late Marker centerMarker;
-  late Marker destinationMarker;
   late LatLng destinationLatLng;
+  late Marker destinationMarker;
 
   Future<void> getLocationUpdates() async {
     bool serviceEnabled;
@@ -130,13 +130,13 @@ class _HelperPageState extends State<HelperPage> {
     }
     titleName = type + username;
 
+    getLocationUpdates();
+
     centerMarker = Marker(
       markerId: const MarkerId("Choose Destination"),
       position: lamChangCity,
       icon: BitmapDescriptor.defaultMarkerWithHue(350),
     );
-
-    getLocationUpdates();
   }
 
   @override
