@@ -26,7 +26,7 @@ double calculateDistance(LatLng point1, LatLng point2) {
   double a = pow(sin(dLat / 2), 2) +
       cos(lat1) * cos(lat2) * pow(sin(dLon / 2), 2);
   double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-  double distance = radiusEarth * c;
+  double distance = radiusEarth * c * 100000; // Convert to centimeters
 
   return distance;
 }

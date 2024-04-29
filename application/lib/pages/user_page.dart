@@ -280,7 +280,7 @@ class _UserPageState extends State<UserPage> {
                                   print("Fire Fighting Vehicle");
                                 });
                               },
-                              imagePath: 'assets/images/fire.png',
+                              imagePath: 'assets/images/fire.jpg',
                             ),
                             BuildImage(
                               index: 1,
@@ -293,7 +293,7 @@ class _UserPageState extends State<UserPage> {
                                   print("Ambulance Vehicle");
                                 });
                               },
-                              imagePath: 'assets/images/ambulance.png',
+                              imagePath: 'assets/images/ambulance.jpg',
                             ),
                             BuildImage(
                               index: 2,
@@ -306,7 +306,7 @@ class _UserPageState extends State<UserPage> {
                                   print("Police Car");
                                 });
                               },
-                              imagePath: 'assets/images/police.png',
+                              imagePath: 'assets/images/police.jpg',
                             ),
                             BuildImage(
                               index: 3,
@@ -319,7 +319,7 @@ class _UserPageState extends State<UserPage> {
                                   print("Police Motorbike");
                                 });
                               },
-                              imagePath: 'assets/images/motorbike.png',
+                              imagePath: 'assets/images/motorbike.jpg',
                             ),
                           ],
                         ),
@@ -358,6 +358,9 @@ class _UserPageState extends State<UserPage> {
                       setState(() {
                         selectDestination = false;
                         showDestinationMarker = false;
+                        // ignore: avoid_print
+                        print(
+                            calculateDistance(destinationLatLng, lamChangCity));
                       });
                     },
                     style: ButtonStyle(
