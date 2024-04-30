@@ -54,10 +54,9 @@ class _HelperPageState extends State<HelperPage> {
   late String username;
   late String type;
   late String titleName;
-  static const LatLng lamChangCity =
-      LatLng(18.79399727691207, 98.9912201458245);
   final Completer<GoogleMapController> mapController = Completer();
   Location location = Location();
+  LatLng lamChangCity = const LatLng(18.79399727691207, 98.9912201458245);
   LatLng? currentP;
   bool selectVehicle = true;
   bool selectDestination = true;
@@ -119,8 +118,8 @@ class _HelperPageState extends State<HelperPage> {
   @override
   void initState() {
     super.initState();
-    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
 
+    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
     username = jwtDecodedToken['username'];
     type = jwtDecodedToken['type'];
     if (type == "user") {
@@ -188,7 +187,7 @@ class _HelperPageState extends State<HelperPage> {
                     mapController.complete(controller);
                   },
                   mapType: MapType.hybrid,
-                  initialCameraPosition: const CameraPosition(
+                  initialCameraPosition: CameraPosition(
                     target: lamChangCity,
                     zoom: 17.5,
                   ),
