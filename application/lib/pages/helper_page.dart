@@ -204,9 +204,9 @@ class _HelperPageState extends State<HelperPage> {
                   polylines: inSidePolylines,
                 ),
           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
+            bottom: MediaQuery.of(context).size.height * 0,
+            left: MediaQuery.of(context).size.width * 0,
+            right: MediaQuery.of(context).size.width * 0,
             child: Visibility(
               visible: selectVehicle,
               child: Container(
@@ -217,7 +217,8 @@ class _HelperPageState extends State<HelperPage> {
                     topRight: Radius.circular(25),
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 17),
+                padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * 0.02),
                 child: const Column(
                   children: [
                     Text(
@@ -230,9 +231,9 @@ class _HelperPageState extends State<HelperPage> {
             ),
           ),
           Positioned(
-            top: 61,
-            left: 100,
-            right: 100,
+            top: MediaQuery.of(context).size.height * 0.071,
+            left: MediaQuery.of(context).size.width * 0.255,
+            right: MediaQuery.of(context).size.width * 0.255,
             child: Visibility(
               visible: selectDestination,
               child: Container(
@@ -240,7 +241,8 @@ class _HelperPageState extends State<HelperPage> {
                   color: AppColors.skin,
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 15),
+                padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * 0.017),
                 child: const Column(
                   children: [
                     Text(
@@ -380,8 +382,10 @@ class _HelperPageState extends State<HelperPage> {
                         ),
                       ),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 80),
+                        EdgeInsets.symmetric(
+                          vertical: MediaQuery.of(context).size.height * 0.018,
+                          horizontal: MediaQuery.of(context).size.width * 0.195,
+                        ),
                       ),
                     ),
                     child: const Text(
@@ -412,8 +416,10 @@ class _HelperPageState extends State<HelperPage> {
                         ),
                       ),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                        const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 95),
+                        EdgeInsets.symmetric(
+                          vertical: MediaQuery.of(context).size.height * 0.018,
+                          horizontal: MediaQuery.of(context).size.width * 0.235,
+                        ),
                       ),
                     ),
                     child: const Text(
