@@ -7,8 +7,18 @@ class AppText {
     fontSize: 40,
     fontWeight: FontWeight.w600,
   );
+  static const header2 = TextStyle(
+    color: AppColors.green,
+    fontSize: 40,
+    fontWeight: FontWeight.w600,
+  );
   static const subtitle = TextStyle(
     color: AppColors.white,
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+  );
+  static const subtitle2 = TextStyle(
+    color: AppColors.grey,
     fontSize: 20,
     fontWeight: FontWeight.w400,
   );

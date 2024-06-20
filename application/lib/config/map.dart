@@ -366,6 +366,7 @@ findShortestPath() async {
     148: {146: 1150, 149: 1860},
     149: {148: 1860, 33: 1068}
   };
+
   if (selectedIndex == 0) {
     // ignore: avoid_print
     print("Your vehicle width: > 300 cm");

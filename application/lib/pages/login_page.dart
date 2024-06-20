@@ -26,6 +26,8 @@ class _LoginPageState extends State<LoginPage> {
   bool switchError = false;
   String errorMessage = "";
   late SharedPreferences prefs;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -36,9 +38,6 @@ class _LoginPageState extends State<LoginPage> {
   void initSharedPref() async {
     prefs = await SharedPreferences.getInstance();
   }
-
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
 
   void loginUser() async {
     if (usernameController.text.isEmpty) {
