@@ -20,18 +20,104 @@ class _UserPageState extends State<UserPage> {
   late String type;
   late String titleName;
   late SharedPreferences prefs;
-  bool selectEventType = true;
+  var sex = Type.none;
   bool eventValidate = false;
-  TextEditingController eventController = TextEditingController();
-  bool symptomValidate = false;
-  TextEditingController symptomController = TextEditingController();
-  bool nameValidate = false;
-  TextEditingController nameController = TextEditingController();
-  bool phoneValidate = false;
-  TextEditingController phoneController = TextEditingController();
-  bool ageValidate = false;
-  TextEditingController ageController = TextEditingController();
   bool sexValidate = false;
+  bool ageValidate = false;
+  bool symptomValidate = false;
+  bool nameValidate = false;
+  bool phoneValidate = false;
+
+  TextEditingController eventController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController symptomController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
+  bool selectEventType = true;
+  bool selectEventForm = false;
+  bool selectPosition = false;
+
+  void toggleVisibility(int section) {
+    setState(() {
+      selectEventType = section == 1;
+      selectEventForm = section == 2;
+      selectPosition = section == 3;
+    });
+  }
+
+  void submitEventForm() async {
+    if (eventController.text.isEmpty) {
+      setState(() {
+        eventValidate = true;
+      });
+    } else {
+      setState(() {
+        eventValidate = false;
+      });
+    }
+
+    if (sex == Type.none) {
+      setState(() {
+        sexValidate = true;
+      });
+    } else {
+      setState(() {
+        sexValidate = false;
+      });
+    }
+
+    if (ageController.text.isEmpty) {
+      setState(() {
+        ageValidate = true;
+      });
+    } else {
+      setState(() {
+        ageValidate = false;
+      });
+    }
+
+    if (symptomController.text.isEmpty) {
+      setState(() {
+        symptomValidate = true;
+      });
+    } else {
+      setState(() {
+        symptomValidate = false;
+      });
+    }
+
+    if (nameController.text.isEmpty) {
+      setState(() {
+        nameValidate = true;
+      });
+    } else {
+      setState(() {
+        nameValidate = false;
+      });
+    }
+
+    if (phoneController.text.isEmpty) {
+      setState(() {
+        phoneValidate = true;
+      });
+    } else {
+      setState(() {
+        phoneValidate = false;
+      });
+    }
+
+    if (eventController.text.isNotEmpty &&
+        ageController.text.isNotEmpty &&
+        symptomController.text.isNotEmpty &&
+        nameController.text.isNotEmpty &&
+        phoneController.text.isNotEmpty &&
+        sex != Type.none) {
+      setState(() {
+        toggleVisibility(3);
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -51,8 +137,6 @@ class _UserPageState extends State<UserPage> {
   void initSharedPref() async {
     prefs = await SharedPreferences.getInstance();
   }
-
-  void submitEvent() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +195,7 @@ class _UserPageState extends State<UserPage> {
                         child: InkWell(
                           onTap: () {
                             setState(() {
-                              selectEventType = false;
+                              toggleVisibility(2);
                             });
                           },
                           borderRadius:
@@ -140,7 +224,11 @@ class _UserPageState extends State<UserPage> {
                       child: Material(
                         type: MaterialType.transparency,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            setState(() {
+                              toggleVisibility(3);
+                            });
+                          },
                           borderRadius:
                               const BorderRadius.all(Radius.circular(50)),
                           child: const Center(
@@ -157,7 +245,7 @@ class _UserPageState extends State<UserPage> {
               ),
             ),
             Visibility(
-              visible: !selectEventType,
+              visible: selectEventForm,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
@@ -246,8 +334,12 @@ class _UserPageState extends State<UserPage> {
                                                 VisualDensity.minimumDensity,
                                           ),
                                           contentPadding: EdgeInsets.zero,
-                                          groupValue: type,
-                                          onChanged: (value) {},
+                                          groupValue: sex,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              sex = Type.male;
+                                            });
+                                          },
                                         ),
                                       ),
                                       Expanded(
@@ -264,8 +356,12 @@ class _UserPageState extends State<UserPage> {
                                               vertical:
                                                   VisualDensity.minimumDensity),
                                           contentPadding: EdgeInsets.zero,
-                                          groupValue: type,
-                                          onChanged: (value) {},
+                                          groupValue: sex,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              sex = Type.female;
+                                            });
+                                          },
                                         ),
                                       ),
                                     ],
@@ -435,7 +531,7 @@ class _UserPageState extends State<UserPage> {
                         type: MaterialType.transparency,
                         child: InkWell(
                           onTap: () {
-                            submitEvent();
+                            submitEventForm();
                           },
                           borderRadius:
                               const BorderRadius.all(Radius.circular(50)),
@@ -451,6 +547,10 @@ class _UserPageState extends State<UserPage> {
                   ],
                 ),
               ),
+            ),
+            Visibility(
+              visible: selectPosition,
+              child: Container(),
             ),
           ],
         )),
