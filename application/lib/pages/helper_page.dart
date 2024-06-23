@@ -54,13 +54,16 @@ class _HelperPageState extends State<HelperPage> {
   late String username;
   late String type;
   late String titleName;
+
+  bool selectVehicle = true;
+  bool selectDestination = true;
+  bool showCenterMarker = true;
+
   final Completer<GoogleMapController> mapController = Completer();
   Location location = Location();
   LatLng lamChangCity = const LatLng(18.79399727691207, 98.9912201458245);
   LatLng? currentP;
-  bool selectVehicle = true;
-  bool selectDestination = true;
-  bool showCenterMarker = true;
+
   late Marker centerMarker;
   late LatLng destinationLatLng;
   late Marker destinationMarker;
