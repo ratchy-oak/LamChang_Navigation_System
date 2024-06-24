@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:application/config/map.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,13 @@ class _UserPageState extends State<UserPage> {
   Location location = Location();
   LatLng lamChangCity = const LatLng(18.79399727691207, 98.9912201458245);
   LatLng? currentP;
+
+  bool showCenterMarker = true;
+  bool selectDestination = true;
+
   late Marker centerMarker;
+  late LatLng destinationLatLng;
+  late Marker destinationMarker;
 
   void initSharedPref() async {
     prefs = await SharedPreferences.getInstance();
@@ -216,15 +223,32 @@ class _UserPageState extends State<UserPage> {
         leading: Container(
           margin: const EdgeInsets.only(left: 15),
           child: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back,
-              color: AppColors.black,
+              color: selectPosition ? AppColors.white : AppColors.black,
             ),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
         ),
+        actions: <Widget>[
+          Visibility(
+            visible: selectPosition,
+            child: Container(
+              margin: const EdgeInsets.only(right: 20),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.white,
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.maps_home_work_rounded),
+                color: AppColors.green,
+                onPressed: goToLamChangCity,
+              ),
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -246,7 +270,7 @@ class _UserPageState extends State<UserPage> {
                         style: AppText.subtitle2,
                       ),
                       const SizedBox(
-                        height: 75,
+                        height: 175,
                       ),
                       Container(
                         height: 70,
@@ -628,28 +652,150 @@ class _UserPageState extends State<UserPage> {
                           ),
                         ),
                       )
-                    : SizedBox(
-                        height: MediaQuery.of(context).size.height,
-                        child: GoogleMap(
-                          myLocationEnabled: true,
-                          myLocationButtonEnabled: false,
-                          onMapCreated: (GoogleMapController controller) {
-                            mapController.complete(controller);
-                          },
-                          mapType: MapType.hybrid,
-                          initialCameraPosition: CameraPosition(
-                            target: lamChangCity,
-                            zoom: 17.5,
+                    : Stack(
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height,
+                            child: GoogleMap(
+                              myLocationEnabled: true,
+                              myLocationButtonEnabled: false,
+                              onMapCreated: (GoogleMapController controller) {
+                                mapController.complete(controller);
+                              },
+                              mapType: MapType.hybrid,
+                              initialCameraPosition: CameraPosition(
+                                target: lamChangCity,
+                                zoom: 17.5,
+                              ),
+                              onCameraMove: (CameraPosition cameraPosition) {
+                                setState(() {
+                                  destinationLatLng = cameraPosition.target;
+                                  centerMarker = centerMarker.copyWith(
+                                    positionParam: cameraPosition.target,
+                                  );
+                                });
+                              },
+                              markers: showCenterMarker
+                                  ? {centerMarker}
+                                  : {destinationMarker},
+                            ),
                           ),
-                          onCameraMove: (CameraPosition cameraPosition) {
-                            setState(() {
-                              centerMarker = centerMarker.copyWith(
-                                positionParam: cameraPosition.target,
-                              );
-                            });
-                          },
-                          markers: {centerMarker},
-                        ),
+                          Positioned(
+                            bottom: MediaQuery.of(context).size.height * 0.05,
+                            left: 0,
+                            right: 0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: MediaQuery.of(context).size.width *
+                                          0.05),
+                                  child: RawMaterialButton(
+                                    onPressed: () {
+                                      goToMe();
+                                    },
+                                    fillColor: AppColors.red,
+                                    padding: const EdgeInsets.all(15),
+                                    shape: const CircleBorder(),
+                                    child: const Icon(
+                                      Icons.location_searching_rounded,
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: selectDestination,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        showCenterMarker = false;
+                                        selectDestination = false;
+                                        findClosestEndNode(destinationLatLng);
+                                        destinationMarker = Marker(
+                                          markerId: const MarkerId(
+                                              "Your Destination"),
+                                          position: inSideNode[to - 1],
+                                          icon: BitmapDescriptor
+                                              .defaultMarkerWithHue(350),
+                                        );
+                                        destinationLatLng = inSideNode[to - 1];
+                                      });
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              AppColors.green),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                      ),
+                                      padding: MaterialStateProperty.all<
+                                          EdgeInsetsGeometry>(
+                                        EdgeInsets.symmetric(
+                                          vertical: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018,
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.195,
+                                        ),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'ยืนยันจุดหมาย',
+                                      style: AppText.button,
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: !selectDestination,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        showCenterMarker = true;
+                                        selectDestination = true;
+                                      });
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              AppColors.yellow),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                      ),
+                                      padding: MaterialStateProperty.all<
+                                          EdgeInsetsGeometry>(
+                                        EdgeInsets.symmetric(
+                                          vertical: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.018,
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.195,
+                                        ),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'เปลี่ยนจุดหมาย',
+                                      style: AppText.button,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
               ),
             ],
