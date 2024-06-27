@@ -1,5 +1,5 @@
-import 'package:application/styles/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:application/styles/app_colors.dart';
 
 class AppText {
   static const header = TextStyle(
@@ -29,6 +29,11 @@ class AppText {
   static const button = TextStyle(
     color: AppColors.white,
     fontSize: 16,
+    fontWeight: FontWeight.w500,
+  );
+  static const button2 = TextStyle(
+    color: AppColors.white,
+    fontSize: 14,
     fontWeight: FontWeight.w500,
   );
   static const error = TextStyle(

@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:application/pages/login_page.dart';
-import 'package:application/styles/app_colors.dart';
-import 'package:application/styles/app_text.dart';
+import '../config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:application/styles/app_text.dart';
+import 'package:application/pages/login_page.dart';
+import 'package:application/styles/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../config/config.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   const ForgetPasswordPage({super.key});

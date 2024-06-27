@@ -1,15 +1,15 @@
 import 'dart:convert';
-import 'package:application/pages/forgetpassword_page.dart';
-import 'package:application/pages/helper_page.dart';
-import 'package:application/pages/register_page.dart';
-import 'package:application/pages/user_page.dart';
-import 'package:application/styles/app_colors.dart';
-import 'package:application/styles/app_text.dart';
+import '../config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:application/pages/user_page.dart';
+import 'package:application/styles/app_text.dart';
+import 'package:application/pages/helper_page.dart';
+import 'package:application/styles/app_colors.dart';
+import 'package:application/pages/register_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../config/config.dart';
+import 'package:application/pages/forgetpassword_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

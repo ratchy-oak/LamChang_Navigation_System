@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:application/pages/login_page.dart';
-import 'package:application/styles/app_colors.dart';
-import 'package:application/styles/app_text.dart';
+import '../config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../config/config.dart';
+import 'package:application/styles/app_text.dart';
+import 'package:application/pages/login_page.dart';
+import 'package:application/styles/app_colors.dart';
 
 enum Type { none, user, helper }
 
@@ -129,6 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
         checkPassword == false &&
         type != Type.none) {
       String typevalue = "";
+
       switch (type) {
         case Type.user:
           typevalue = "user";
@@ -139,6 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
         default:
           typevalue = "";
       }
+      
       var regBody = {
         "username": usernameController.text,
         "password": passwordController.text,
