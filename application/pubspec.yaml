@@ -69,6 +69,8 @@ flutter:
     - assets/images/ambulance.jpg
     - assets/images/motorbike.jpg
     - assets/images/police.jpg
+    - assets/images/fire.png
+    - assets/images/injured.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

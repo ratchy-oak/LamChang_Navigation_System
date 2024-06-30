@@ -19,3 +19,18 @@ exports.report = async(req, res, next) => {
         })
     }
 }
+
+exports.fetchEvents = async(req, res, next) => {
+    try {
+        const events = await EventService.fetchEvents()
+        res.json({
+            status: true,
+            data: events
+        })
+    } catch (error) {
+        res.json({
+            status: false,
+            error: error.message
+        })
+    }
+}

@@ -9,6 +9,14 @@ class EventService {
             throw error
         }
     }
+
+    static async fetchEvents() {
+        try {
+            return await EventModel.find();
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 module.exports = EventService

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:application/config/map.dart';
@@ -6,6 +8,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class HelperPage extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
@@ -67,6 +70,46 @@ class _HelperPageState extends State<HelperPage> {
   late Marker centerMarker;
   late LatLng destinationLatLng;
   late Marker destinationMarker;
+
+  BitmapDescriptor? fireIcon;
+  BitmapDescriptor? injuredIcon;
+  final Set<Marker> eventMarkers = {};
+
+  Future<Uint8List> resizeImage(String path, int width, int height) async {
+    final ByteData data = await rootBundle.load(path);
+    final Uint8List bytes = data.buffer.asUint8List();
+    final ui.Codec codec = await ui.instantiateImageCodec(bytes,
+        targetWidth: width, targetHeight: height);
+    final ui.FrameInfo frameInfo = await codec.getNextFrame();
+    final ByteData? byteData =
+        await frameInfo.image.toByteData(format: ui.ImageByteFormat.png);
+    return byteData!.buffer.asUint8List();
+  }
+
+  void loadCustomMarkers() async {
+    final Uint8List fireIconBytes =
+        await resizeImage('assets/images/fire.png', 73, 97);
+    final Uint8List injuredIconBytes =
+        await resizeImage('assets/images/injured.png', 80 , 80);
+
+    fireIcon = BitmapDescriptor.fromBytes(fireIconBytes);
+    injuredIcon = BitmapDescriptor.fromBytes(injuredIconBytes);
+
+    setState(() {
+      eventMarkers.addAll({
+        Marker(
+          markerId: const MarkerId('Fire'),
+          position: const LatLng(18.794028489430524, 98.99153046328985),
+          icon: fireIcon!,
+        ),
+        Marker(
+          markerId: const MarkerId('Injured'),
+          position: const LatLng(18.79478258327741, 98.99139777292378),
+          icon: injuredIcon!,
+        ),
+      });
+    });
+  }
 
   Future<void> getLocationUpdates() async {
     bool serviceEnabled;
@@ -133,6 +176,8 @@ class _HelperPageState extends State<HelperPage> {
     titleName = type + username;
 
     getLocationUpdates();
+
+    loadCustomMarkers();
 
     centerMarker = Marker(
       markerId: const MarkerId("Choose Destination"),
@@ -205,8 +250,14 @@ class _HelperPageState extends State<HelperPage> {
                         });
                       },
                       markers: showCenterMarker
-                          ? {centerMarker}
-                          : {destinationMarker},
+                          ? {
+                              centerMarker,
+                              ...eventMarkers,
+                            }
+                          : {
+                              destinationMarker,
+                              ...eventMarkers,
+                            },
                       polylines: inSidePolylines,
                     ),
               Positioned(
