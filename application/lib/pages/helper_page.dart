@@ -1,14 +1,34 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 import 'package:application/config/map.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:application/config/config.dart';
 import 'package:application/styles/app_text.dart';
 import 'package:application/styles/app_colors.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+class EventService {
+  static Future<List<dynamic>> fetchEvents() async {
+    final response = await http.get(Uri.parse(fetchevent));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      if (responseData['status']) {
+        return responseData['data'];
+      } else {
+        throw Exception('Failed to load events');
+      }
+    } else {
+      throw Exception('Failed to load events');
+    }
+  }
+}
 
 class HelperPage extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
@@ -73,7 +93,7 @@ class _HelperPageState extends State<HelperPage> {
 
   BitmapDescriptor? fireIcon;
   BitmapDescriptor? injuredIcon;
-  final Set<Marker> eventMarkers = {};
+  Set<Marker> eventMarkers = {};
 
   Future<Uint8List> resizeImage(String path, int width, int height) async {
     final ByteData data = await rootBundle.load(path);
@@ -87,28 +107,46 @@ class _HelperPageState extends State<HelperPage> {
   }
 
   void loadCustomMarkers() async {
-    final Uint8List fireIconBytes =
-        await resizeImage('assets/images/fire.png', 73, 97);
-    final Uint8List injuredIconBytes =
-        await resizeImage('assets/images/injured.png', 80 , 80);
+    try {
+      List<dynamic> events = await EventService.fetchEvents();
 
-    fireIcon = BitmapDescriptor.fromBytes(fireIconBytes);
-    injuredIcon = BitmapDescriptor.fromBytes(injuredIconBytes);
+      final Uint8List fireIconBytes =
+          await resizeImage('assets/images/fire.png', 73, 97);
+      final Uint8List injuredIconBytes =
+          await resizeImage('assets/images/injured.png', 80, 80);
 
-    setState(() {
-      eventMarkers.addAll({
-        Marker(
-          markerId: const MarkerId('Fire'),
-          position: const LatLng(18.794028489430524, 98.99153046328985),
-          icon: fireIcon!,
-        ),
-        Marker(
-          markerId: const MarkerId('Injured'),
-          position: const LatLng(18.79478258327741, 98.99139777292378),
-          icon: injuredIcon!,
-        ),
+      fireIcon = BitmapDescriptor.fromBytes(fireIconBytes);
+      injuredIcon = BitmapDescriptor.fromBytes(injuredIconBytes);
+
+      Set<Marker> newEventMarkers = {};
+      // ignore: avoid_function_literals_in_foreach_calls
+      events.forEach(
+        (event) {
+          int locationIndex = event['location'];
+          LatLng eventLocation = inSideNode[locationIndex - 1];
+
+          BitmapDescriptor icon = injuredIcon!;
+          if (event['event'] == "N/A") {
+            icon = fireIcon!;
+          }
+
+          newEventMarkers.add(
+            Marker(
+              markerId: MarkerId(event['_id']),
+              position: eventLocation,
+              icon: icon,
+            ),
+          );
+        },
+      );
+
+      setState(() {
+        eventMarkers = newEventMarkers;
       });
-    });
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error loading custom markers: $e');
+    }
   }
 
   Future<void> getLocationUpdates() async {
