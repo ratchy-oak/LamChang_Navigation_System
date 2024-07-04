@@ -201,10 +201,10 @@ class _UserPageState extends State<UserPage> {
 
       switch (sex) {
         case Type.male:
-          sexvalue = "male";
+          sexvalue = "ชาย";
           break;
         case Type.female:
-          sexvalue = "female";
+          sexvalue = "หญิง";
           break;
         default:
           sexvalue = "";
@@ -234,7 +234,7 @@ class _UserPageState extends State<UserPage> {
       }
     } else {
       var eventBody = {
-        "event": "N/A",
+        "event": "เหตุเพลิงไหม้",
         "sex": "N/A",
         "age": "N/A",
         "symptom": "N/A",

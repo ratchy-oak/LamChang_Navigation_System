@@ -126,15 +126,20 @@ class _HelperPageState extends State<HelperPage> {
           LatLng eventLocation = inSideNode[locationIndex - 1];
 
           BitmapDescriptor icon = injuredIcon!;
-          if (event['event'] == "N/A") {
+          if (event['event'] == "เหตุเพลิงไหม้") {
             icon = fireIcon!;
           }
 
           newEventMarkers.add(
             Marker(
-              markerId: MarkerId(event['_id']),
+              markerId: MarkerId(event['_id'].toString()),
               position: eventLocation,
               icon: icon,
+              infoWindow: InfoWindow(
+                title: event['event'].toString(),
+                snippet:
+                    'เพศ: ${event['sex'].toString()}\nอายุ: ${event['age'].toString()}\nอาการ: ${event['symptom'].toString()}',
+              ),
             ),
           );
         },
