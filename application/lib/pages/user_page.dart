@@ -7,7 +7,6 @@ import 'package:application/config/map.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:application/config/config.dart';
 import 'package:application/styles/app_text.dart';
-import 'package:application/pages/login_page.dart';
 import 'package:application/styles/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
