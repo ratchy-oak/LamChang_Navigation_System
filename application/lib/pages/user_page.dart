@@ -30,11 +30,12 @@ class _UserPageState extends State<UserPage> {
   late SharedPreferences prefs;
 
   bool selectEventType = true;
+  bool selectEventForm = false;
+  bool selectPosition = false;
+  bool submitEvent = false;
   bool fireEvent = false;
 
   var sex = Type.none;
-  bool selectEventForm = false;
-  bool selectPosition = false;
   bool eventValidate = false;
   bool sexValidate = false;
   bool ageValidate = false;
@@ -69,6 +70,7 @@ class _UserPageState extends State<UserPage> {
       selectEventType = section == 1;
       selectEventForm = section == 2;
       selectPosition = section == 3;
+      submitEvent = section == 4;
     });
   }
 
@@ -227,10 +229,9 @@ class _UserPageState extends State<UserPage> {
       var jsonResponse = jsonDecode(response.body);
 
       if (jsonResponse['status'] == true) {
-        Navigator.push(
-            // ignore: use_build_context_synchronously
-            context,
-            MaterialPageRoute(builder: (context) => const LoginPage()));
+        showCenterMarker = true;
+        selectDestination = true;
+        toggleVisibility(4);
       }
     } else {
       var eventBody = {
@@ -250,10 +251,9 @@ class _UserPageState extends State<UserPage> {
       var jsonResponse = jsonDecode(response.body);
 
       if (jsonResponse['status'] == true) {
-        Navigator.push(
-            // ignore: use_build_context_synchronously
-            context,
-            MaterialPageRoute(builder: (context) => const LoginPage()));
+        showCenterMarker = true;
+        selectDestination = true;
+        toggleVisibility(4);
       }
     }
   }
@@ -879,6 +879,59 @@ class _UserPageState extends State<UserPage> {
                               ),
                             ],
                           ),
+                  ),
+                  Visibility(
+                    visible: submitEvent,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "แจ้งเหตุสำเร็จ",
+                            style: AppText.header2,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            "เจ้าหน้าที่กำลังเดินทางไปกรุณารอสักครู่",
+                            style: AppText.subtitle2,
+                          ),
+                          const SizedBox(
+                            height: 175,
+                          ),
+                          Container(
+                            height: 70,
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 50,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: AppColors.red,
+                            ),
+                            child: Material(
+                              type: MaterialType.transparency,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    toggleVisibility(1);
+                                  });
+                                },
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(50)),
+                                child: const Center(
+                                  child: Text(
+                                    "กลับสู่หน้าแรก",
+                                    style: AppText.button,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
