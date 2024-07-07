@@ -6,6 +6,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 int selectedIndex = -1;
 int from = -1;
 int to = -1;
+int from2 = -1;
+int to2 = -1;
+int from3 = -1;
+int to3 = -1;
 
 double radians(double degrees) {
   return degrees * (pi / 180.0);
@@ -297,6 +301,16 @@ List<LatLng> inSideNode2 = [
   const LatLng(18.794296709888993, 98.99090508355762), // 111
   const LatLng(18.79428147470535, 98.99096476271009), // 112
   const LatLng(18.794266239520322, 98.99100901916023), // 113
+  const LatLng(0, 0), // 114
+  const LatLng(0, 0), // 115
+  const LatLng(0, 0), // 116
+  const LatLng(0, 0), // 117
+  const LatLng(0, 0), // 118
+  const LatLng(0, 0), // 119
+  const LatLng(0, 0), // 120
+  const LatLng(0, 0), // 121
+  const LatLng(0, 0), // 122
+  const LatLng(0, 0), // 123
   const LatLng(18.79423416460676, 98.99110399206168), // 124
   const LatLng(18.794195441829654, 98.99118915219597), // 125
   const LatLng(18.79415227544501, 98.99128705282298), // 126
@@ -321,6 +335,158 @@ List<LatLng> inSideNode2 = [
   const LatLng(18.793977157261814, 98.99185667214486), // 145
   const LatLng(18.793977360382293, 98.99190210215218), // 146
   const LatLng(18.79425266045243, 98.99192506847659), // 147
+  const LatLng(18.793983073586954, 98.99201408437918), // 148
+  const LatLng(18.79398540966922, 98.99219395993062), // 149
+];
+
+List<LatLng> inSideNode3 = [
+  const LatLng(18.795245857106156, 98.99009726127217), // 1
+  const LatLng(18.795242387570667, 98.99018241940603), // 2
+  const LatLng(18.79524293909769, 98.99025170284756), // 3
+  const LatLng(18.795239744343995, 98.99033382070922), // 4
+  const LatLng(18.795236549590225, 98.99045980975728), // 5
+  const LatLng(18.795230823711357, 98.99061372066065), // 6
+  const LatLng(18.795223846395654, 98.99077862257336), // 7
+  const LatLng(18.795218180662566, 98.99088012827998), // 8
+  const LatLng(18.79521419341057, 98.99106058235776), // 9
+  const LatLng(18.795210256694226, 98.99114089347049), // 10
+  const LatLng(18.795207672695195, 98.99121915551834), // 11
+  const LatLng(18.79520338692916, 98.99130817243757), // 12
+  const LatLng(18.7952016686964, 98.99140695144028), // 13
+  const LatLng(18.795201948404276, 98.991494995873), // 14
+  const LatLng(18.795193719955602, 98.99168123620659), // 15
+  const LatLng(18.795186804569216, 98.99182067076694), // 16
+  const LatLng(18.795179147263276, 98.99203108921516), // 17
+  const LatLng(18.795170162023233, 98.99222594158269), // 18
+  const LatLng(18.795164392502393, 98.99248984425635), // 19
+  const LatLng(18.79490088959547, 98.99245308019493), // 20
+  const LatLng(18.794786432563804, 98.99243388513172), // 21
+  const LatLng(18.794693883906398, 98.99241779991803), // 22
+  const LatLng(18.7946403277011, 98.9924079244198), // 23
+  const LatLng(18.794596159949887, 98.99239951618407), // 24
+  const LatLng(18.794503891338472, 98.99238046278106), // 25
+  const LatLng(18.7944185335181, 98.99236484407002), // 26
+  const LatLng(18.794363629243623, 98.99235429923185), // 27
+  const LatLng(0, 0), // 28
+  const LatLng(18.794307784858123, 98.9923427744283), // 29
+  const LatLng(18.79421256494263, 98.9923320455919), // 30
+  const LatLng(18.794129743420644, 98.99231520781342), // 31
+  const LatLng(18.79409931871579, 98.99231300728373), // 32
+  const LatLng(18.793982657653974, 98.99229966500957), // 33
+  const LatLng(0, 0), // 34
+  const LatLng(0, 0), // 35
+  const LatLng(0, 0), // 36
+  const LatLng(0, 0), // 37
+  const LatLng(0, 0), // 38
+  const LatLng(0, 0), // 39
+  const LatLng(0, 0), // 40
+  const LatLng(0, 0), // 41
+  const LatLng(0, 0), // 42
+  const LatLng(0, 0), // 43
+  const LatLng(0, 0), // 44
+  const LatLng(0, 0), // 45
+  const LatLng(0, 0), // 46
+  const LatLng(0, 0), // 47
+  const LatLng(0, 0), // 48
+  const LatLng(0, 0), // 49
+  const LatLng(0, 0), // 50
+  const LatLng(18.79280530393715, 98.99211163117785), // 51
+  const LatLng(18.79282315440053, 98.99201188970095), // 52
+  const LatLng(18.79283236614528, 98.99193703984608), // 53
+  const LatLng(18.792844412272686, 98.99184647152555), // 54
+  const LatLng(18.792867795928647, 98.9917177297792), // 55
+  const LatLng(18.792879842053786, 98.9916309039507), // 56
+  const LatLng(18.792885510818223, 98.99156503608168), // 57
+  const LatLng(18.79289684834597, 98.99149991670795), // 58
+  const LatLng(18.79290251710999, 98.99143704283374), // 59
+  const LatLng(18.792913854637035, 98.99134348051668), // 60
+  const LatLng(18.792920231995698, 98.99127237315649), // 61
+  const LatLng(18.79292731794954, 98.99120425979001), // 62
+  const LatLng(18.792942898129898, 98.99106408811613), // 63
+  const LatLng(0, 0), // 64
+  const LatLng(0, 0), // 65
+  const LatLng(0, 0), // 66
+  const LatLng(0, 0), // 67
+  const LatLng(0, 0), // 68
+  const LatLng(0, 0), // 69
+  const LatLng(18.792804433187865, 98.99006444788427), // 70
+  const LatLng(18.79316944562621, 98.9900148270194), // 71
+  const LatLng(18.79322261767118, 98.98999905115453), // 72
+  const LatLng(18.793211826014073, 98.99012042111629), // 73
+  const LatLng(0, 0), // 74
+  const LatLng(0, 0), // 75
+  const LatLng(0, 0), // 76
+  const LatLng(0, 0), // 77
+  const LatLng(0, 0), // 78
+  const LatLng(0, 0), // 79
+  const LatLng(0, 0), // 80
+  const LatLng(0, 0), // 81
+  const LatLng(0, 0), // 82
+  const LatLng(18.793318598634908, 98.98998362465413), // 83
+  const LatLng(18.79341699306909, 98.98997893078827), // 84
+  const LatLng(18.793503326201467, 98.98997960134054), // 85
+  const LatLng(18.793771141390707, 98.98997445015837), // 86
+  const LatLng(0, 0), // 87
+  const LatLng(0, 0), // 88
+  const LatLng(0, 0), // 89
+  const LatLng(18.793892181260137, 98.98998454721975), // 90
+  const LatLng(18.794011168069844, 98.98999777754511), // 91
+  const LatLng(18.794170413442977, 98.99001195289395), // 92
+  const LatLng(18.79426435024808, 98.99002423819609), // 93
+  const LatLng(18.794482641292582, 98.99004030359055), // 94
+  const LatLng(18.794554177739922, 98.99004513807168), // 95
+  const LatLng(18.794619714003634, 98.99005073816997), // 96
+  const LatLng(18.794697642102133, 98.9900598902214), // 97
+  const LatLng(18.794794378005935, 98.9900690649592), // 98
+  const LatLng(0, 0), // 99
+  const LatLng(18.79486023642551, 98.99007515214717), // 100
+  const LatLng(18.7949186857536, 98.9900768913439), // 101
+  const LatLng(18.79446537302624, 98.99018188725688), // 102
+  const LatLng(18.79445609509767, 98.99023712636205), // 103
+  const LatLng(18.794440913031682, 98.9903333493218), // 104
+  const LatLng(18.794421513723208, 98.99044739134733), // 105
+  const LatLng(18.794394523377292, 98.99060152627324), // 106
+  const LatLng(18.79437765440903, 98.99066211110092), // 107
+  const LatLng(0, 0), // 108
+  const LatLng(18.794358285409473, 98.99072403444808), // 109
+  const LatLng(18.79432337145765, 98.9908286406017), // 110
+  const LatLng(18.794296709888993, 98.99090508355762), // 111
+  const LatLng(18.79428147470535, 98.99096476271009), // 112
+  const LatLng(18.794266239520322, 98.99100901916023), // 113
+  const LatLng(0, 0), // 114
+  const LatLng(0, 0), // 115
+  const LatLng(0, 0), // 116
+  const LatLng(0, 0), // 117
+  const LatLng(0, 0), // 118
+  const LatLng(0, 0), // 119
+  const LatLng(0, 0), // 120
+  const LatLng(0, 0), // 121
+  const LatLng(0, 0), // 122
+  const LatLng(0, 0), // 123
+  const LatLng(18.79423416460676, 98.99110399206168), // 124
+  const LatLng(18.794195441829654, 98.99118915219597), // 125
+  const LatLng(18.79415227544501, 98.99128705282298), // 126
+  const LatLng(18.794120474025032, 98.99135063448678), // 127
+  const LatLng(18.794067419147325, 98.99146204517437), // 128
+  const LatLng(18.794028489430524, 98.99153046328985), // 129
+  const LatLng(0, 0), // 130
+  const LatLng(0, 0), // 131
+  const LatLng(0, 0), // 132
+  const LatLng(0, 0), // 133
+  const LatLng(0, 0), // 134
+  const LatLng(18.793347886015862, 98.99148268447775), // 135
+  const LatLng(18.793243778310217, 98.99147799061198), // 136
+  const LatLng(18.79316125386515, 98.99148603723938), // 137
+  const LatLng(18.793083807810042, 98.9914914016573), // 138
+  const LatLng(18.79300191809181, 98.99149676607551), // 139
+  const LatLng(18.794007627682003, 98.99158711013565), // 140
+  const LatLng(18.793993865194015, 98.9916888665331), // 141
+  const LatLng(18.793987314069195, 98.99173396108279), // 142
+  const LatLng(0, 0), // 143
+  const LatLng(18.79398370838712, 98.99177536777223), // 144
+  const LatLng(18.793977157261814, 98.99185667214486), // 145
+  const LatLng(18.793977360382293, 98.99190210215218), // 146
+  const LatLng(0, 0), // 147
   const LatLng(18.793983073586954, 98.99201408437918), // 148
   const LatLng(18.79398540966922, 98.99219395993062), // 149
 ];
@@ -748,14 +914,74 @@ findShortestPath() async {
     149: {148: 1860, 33: 1068}
   };
 
+  findClosestStartNode2(currentLatLng) async {
+    double minDistance = double.infinity;
+
+    for (int i = 0; i < inSideNode2.length; i++) {
+      double distance = calculateDistance(currentLatLng, inSideNode2[i]);
+      if (distance < minDistance) {
+        minDistance = distance;
+        from2 = i + 1; // Adding 1 to convert from 0-based index to 1-based index
+      }
+    }
+  }
+
+  findClosestEndNode2(destinationLatLng) async {
+    double minDistance = double.infinity;
+
+    for (int i = 0; i < inSideNode2.length; i++) {
+      double distance = calculateDistance(destinationLatLng, inSideNode2[i]);
+      if (distance < minDistance) {
+        minDistance = distance;
+        to2 = i + 1; // Adding 1 to convert from 0-based index to 1-based index
+      }
+    }
+  }
+
+  findClosestStartNode3(currentLatLng) async {
+    double minDistance = double.infinity;
+
+    for (int i = 0; i < inSideNode3.length; i++) {
+      double distance = calculateDistance(currentLatLng, inSideNode3[i]);
+      if (distance < minDistance) {
+        minDistance = distance;
+        from3 = i + 1; // Adding 1 to convert from 0-based index to 1-based index
+      }
+    }
+  }
+
+  findClosestEndNode3(destinationLatLng) async {
+    double minDistance = double.infinity;
+
+    for (int i = 0; i < inSideNode3.length; i++) {
+      double distance = calculateDistance(destinationLatLng, inSideNode3[i]);
+      if (distance < minDistance) {
+        minDistance = distance;
+        to3 = i + 1; // Adding 1 to convert from 0-based index to 1-based index
+      }
+    }
+  }
+
   if (selectedIndex == 0) {
     // ignore: avoid_print
     print("Your vehicle width: > 300 cm");
-    output = Dijkstra.findPathFromGraph(graph3, from, to);
+    if (graph3.containsKey(from) && graph3.containsKey(to)) {
+      output = Dijkstra.findPathFromGraph(graph3, from, to);
+    } else {
+      findClosestStartNode3(inSideNode[from - 1]);
+      findClosestEndNode3(inSideNode[to - 1]);
+      output = Dijkstra.findPathFromGraph(graph3, from3, to3);
+    }
   } else if (selectedIndex == 1 || selectedIndex == 2) {
     // ignore: avoid_print
     print("Your vehicle width: > 200 cm");
-    output = Dijkstra.findPathFromGraph(graph2, from, to);
+    if (graph2.containsKey(from) && graph2.containsKey(to)) {
+      output = Dijkstra.findPathFromGraph(graph2, from, to);
+    } else {
+      findClosestStartNode2(inSideNode[from - 1]);
+      findClosestEndNode2(inSideNode[to - 1]);
+      output = Dijkstra.findPathFromGraph(graph2, from2, to2);
+    }
   } else if (selectedIndex == 3) {
     // ignore: avoid_print
     print("Your vehicle width: > 100 cm");
