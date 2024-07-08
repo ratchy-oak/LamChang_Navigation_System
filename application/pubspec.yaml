@@ -33,6 +33,7 @@ dependencies:
   google_maps_flutter:
   shared_preferences:
   jwt_decoder:
+  mongo_dart:
   location:
   dijkstra:
   http:
