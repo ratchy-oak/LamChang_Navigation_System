@@ -81,6 +81,7 @@ class _HelperPageState extends State<HelperPage> {
   bool selectVehicle = true;
   bool selectDestination = true;
   bool showCenterMarker = true;
+  bool foundObstacle = true;
 
   final Completer<GoogleMapController> mapController = Completer();
   Location location = Location();
@@ -508,6 +509,7 @@ class _HelperPageState extends State<HelperPage> {
                             goToLamChangCity();
                             setState(() {
                               inSidePolylines.clear();
+                              foundObstacle = false;
                               findShortestPath();
                               drawPolylines();
                             });
@@ -564,12 +566,42 @@ class _HelperPageState extends State<HelperPage> {
                 setState(() {
                   showCenterMarker = true;
                   selectDestination = true;
+                  foundObstacle = true;
                   inSidePolylines.clear();
                 });
               },
               child: const Text(
                 'เปลี่ยนจุดหมาย',
                 style: AppText.button2,
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.63,
+          right: MediaQuery.of(context).size.width * 0,
+          child: Visibility(
+            visible: !foundObstacle,
+            child: RawMaterialButton(
+              onPressed: () {
+                showCenterMarker = true;
+                selectDestination = true;
+                foundObstacle = true;
+                inSidePolylines.clear();
+                if (selectedIndex == 0) {
+                  deleteKeysFromMap(graph3, [output[1]]);
+                } else if (selectedIndex == 1 || selectedIndex == 2) {
+                  deleteKeysFromMap(graph2, [output[1]]);
+                } else if (selectedIndex == 3) {
+                  deleteKeysFromMap(graph, [output[1]]);
+                }
+              },
+              fillColor: AppColors.white,
+              padding: const EdgeInsets.all(12),
+              shape: const CircleBorder(),
+              child: const Icon(
+                Icons.block,
+                color: AppColors.red,
               ),
             ),
           ),
