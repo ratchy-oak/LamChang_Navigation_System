@@ -805,16 +805,16 @@ class _UserPageState extends State<UserPage> {
                                         },
                                         style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all<Color>(
+                                              WidgetStateProperty.all<Color>(
                                                   AppColors.yellow),
-                                          shape: MaterialStateProperty.all<
+                                          shape: WidgetStateProperty.all<
                                               RoundedRectangleBorder>(
                                             RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(30.0),
                                             ),
                                           ),
-                                          padding: MaterialStateProperty.all<
+                                          padding: WidgetStateProperty.all<
                                               EdgeInsetsGeometry>(
                                             EdgeInsets.symmetric(
                                               vertical: MediaQuery.of(context)
@@ -844,16 +844,16 @@ class _UserPageState extends State<UserPage> {
                                         },
                                         style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all<Color>(
+                                              WidgetStateProperty.all<Color>(
                                                   AppColors.green),
-                                          shape: MaterialStateProperty.all<
+                                          shape: WidgetStateProperty.all<
                                               RoundedRectangleBorder>(
                                             RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(30.0),
                                             ),
                                           ),
-                                          padding: MaterialStateProperty.all<
+                                          padding: WidgetStateProperty.all<
                                               EdgeInsetsGeometry>(
                                             EdgeInsets.symmetric(
                                               vertical: MediaQuery.of(context)
