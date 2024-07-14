@@ -8,6 +8,7 @@ class AppColors {
   static const black = Color(0xff000000);
   static const white = Color(0xffffffff);
   static const grey = Colors.grey;
+  static const blue = Colors.blue;
   static const transparent = Colors.transparent;
   static const underline = Color.fromRGBO(238, 238, 238, 1);
   static const shadow = Color.fromRGBO(15, 168, 140, 0.298);

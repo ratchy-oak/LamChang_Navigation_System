@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:application/pages/disclaimer_page.dart';
+
 import '../config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -124,191 +126,139 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 75,
-            ),
-            const Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "เข้าสู่ระบบ",
-                    style: AppText.header,
-                  ),
-                  Text(
-                    "ระบบนำทางในชุมชนล่ามช้าง",
-                    style: AppText.subtitle,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
+    return Stack(
+      children: [
+        Scaffold(
+          body: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 75,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "เข้าสู่ระบบ",
+                        style: AppText.header,
+                      ),
+                      Text(
+                        "ระบบนำทางในชุมชนล่ามช้าง",
+                        style: AppText.subtitle,
+                      ),
+                    ],
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: SingleChildScrollView(
+                const SizedBox(
+                  height: 40,
+                ),
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50),
+                      ),
+                    ),
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 30, right: 30, bottom: 30),
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 60,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: AppColors.shadow,
-                                  blurRadius: 20,
-                                  offset: Offset(0, 10),
+                      padding: const EdgeInsets.only(top: 5),
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 30, right: 30, bottom: 30),
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 60,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: AppColors.shadow,
+                                      blurRadius: 20,
+                                      offset: Offset(0, 10),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: AppColors.underline,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: const BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: AppColors.underline,
+                                          ),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        child: TextFormField(
+                                          controller: usernameController,
+                                          decoration: InputDecoration(
+                                            hintText: "ชื่อผู้ใช้",
+                                            hintStyle: AppText.body,
+                                            border: InputBorder.none,
+                                            errorStyle: const TextStyle(
+                                                color: AppColors.red),
+                                            errorText: usernameValidate
+                                                ? "กรุณาป้อนชื่อผู้ใช้"
+                                                : null,
+                                          ),
+                                          style: const TextStyle(
+                                            color: AppColors.black,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    child: TextFormField(
-                                      controller: usernameController,
-                                      decoration: InputDecoration(
-                                        hintText: "ชื่อผู้ใช้",
-                                        hintStyle: AppText.body,
-                                        border: InputBorder.none,
-                                        errorStyle: const TextStyle(
-                                            color: AppColors.red),
-                                        errorText: usernameValidate
-                                            ? "กรุณาป้อนชื่อผู้ใช้"
-                                            : null,
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: const BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: AppColors.underline,
+                                          ),
+                                        ),
                                       ),
-                                      style: const TextStyle(
-                                        color: AppColors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: AppColors.underline,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    child: TextFormField(
-                                      controller: passwordController,
-                                      obscureText: _isSecurePassword,
-                                      enableSuggestions: false,
-                                      autocorrect: false,
-                                      decoration: InputDecoration(
-                                        hintText: "รหัสผ่าน",
-                                        hintStyle: AppText.body,
-                                        border: InputBorder.none,
-                                        suffixIcon: togglePassword(),
-                                        errorStyle: const TextStyle(
-                                            color: AppColors.red),
-                                        errorText:
-                                            switchError ? errorMessage : null,
-                                      ),
-                                      style: const TextStyle(
-                                        color: AppColors.black,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        child: TextFormField(
+                                          controller: passwordController,
+                                          obscureText: _isSecurePassword,
+                                          enableSuggestions: false,
+                                          autocorrect: false,
+                                          decoration: InputDecoration(
+                                            hintText: "รหัสผ่าน",
+                                            hintStyle: AppText.body,
+                                            border: InputBorder.none,
+                                            suffixIcon: togglePassword(),
+                                            errorStyle: const TextStyle(
+                                                color: AppColors.red),
+                                            errorText: switchError
+                                                ? errorMessage
+                                                : null,
+                                          ),
+                                          style: const TextStyle(
+                                            color: AppColors.black,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ForgetPasswordPage()));
-                            },
-                            style: TextButton.styleFrom(
-                              foregroundColor: AppColors.grey,
-                            ),
-                            child: const Text(
-                              "ลืมรหัสผ่าน ?",
-                              style: AppText.body,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Container(
-                            height: 50,
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 50,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: AppColors.red,
-                            ),
-                            child: Material(
-                              type: MaterialType.transparency,
-                              child: InkWell(
-                                onTap: () {
-                                  loginUser();
-                                },
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(50)),
-                                child: const Center(
-                                  child: Text(
-                                    "เข้าสู่ระบบ",
-                                    style: AppText.button,
-                                  ),
+                                  ],
                                 ),
                               ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "ยังไม่มีบัญชี ?",
-                                style: AppText.body,
+                              const SizedBox(
+                                height: 40,
                               ),
                               TextButton(
                                 onPressed: () {
@@ -316,25 +266,103 @@ class _LoginPageState extends State<LoginPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const RegisterPage()));
+                                              const ForgetPasswordPage()));
                                 },
                                 style: TextButton.styleFrom(
-                                  foregroundColor: AppColors.green,
+                                  foregroundColor: AppColors.grey,
                                 ),
-                                child: const Text("สมัครสมาชิก"),
+                                child: const Text(
+                                  "ลืมรหัสผ่าน ?",
+                                  style: AppText.body,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Container(
+                                height: 50,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 50,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: AppColors.red,
+                                ),
+                                child: Material(
+                                  type: MaterialType.transparency,
+                                  child: InkWell(
+                                    onTap: () {
+                                      loginUser();
+                                    },
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(50)),
+                                    child: const Center(
+                                      child: Text(
+                                        "เข้าสู่ระบบ",
+                                        style: AppText.button,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    "ยังไม่มีบัญชี ?",
+                                    style: AppText.body,
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const RegisterPage()));
+                                    },
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: AppColors.green,
+                                    ),
+                                    child: const Text("สมัครสมาชิก"),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
                 ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: MediaQuery.of(context).size.height * 0.04,
+          right: MediaQuery.of(context).size.width * 0.02,
+          child: Visibility(
+            child: RawMaterialButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DisclaimerPage()));
+              },
+              fillColor: AppColors.white,
+              padding: const EdgeInsets.all(12),
+              shape: const CircleBorder(),
+              child: const Icon(
+                Icons.info_outline,
+                color: AppColors.blue,
               ),
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 

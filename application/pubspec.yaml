@@ -33,6 +33,7 @@ dependencies:
   flutter_launcher_icons:
   google_maps_flutter:
   shared_preferences:
+  flutter_pdfview:
   jwt_decoder:
   mongo_dart:
   location:
@@ -78,6 +79,7 @@ flutter:
     - assets/images/police.jpg
     - assets/images/fire.png
     - assets/images/injured.png
+    - assets/images/disclaimer.pdf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
