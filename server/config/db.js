@@ -1,9 +1,14 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const connection = mongoose.createConnection('mongodb+srv://ratchy-oak:Rachakrit12@lnscluster.nsrrxfc.mongodb.net/LNS').on('open', () => {
-    console.log("MongoDB Connected")
-}).on('error', () => {
-    console.log("MongoDB connection error")
-})
+// Replace the following string with your MongoDB connection string
+const mongoURI = 'mongodb://localhost:27017/LNS';
 
-module.exports = connection
+const connection = mongoose.createConnection(mongoURI)
+    .on('open', () => {
+        console.log("MongoDB Connected");
+    })
+    .on('error', (err) => {
+        console.log("MongoDB connection error:", err);
+    });
+
+module.exports = connection;
